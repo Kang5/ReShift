@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.drawable.toBitmap
 import kotlinx.coroutines.launch
 import ox.fzer0x.snakeloader.AppInfo
@@ -31,6 +32,7 @@ import ox.fzer0x.snakeloader.DownloadedScript
 import ox.fzer0x.snakeloader.FridaManager
 import ox.fzer0x.snakeloader.ModuleMetadata
 import ox.fzer0x.snakeloader.ScriptManager
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.ReShiftCard
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
 import ox.fzer0x.snakeloader.ui.components.ReShiftButtonShape
@@ -76,7 +78,7 @@ fun ModuleDetailsScreen(
                 actions = {
                     if (!script.metadata.noEdit) {
                         IconButton(onClick = onNavigateToEditor) {
-                            Icon(Icons.Default.Edit, contentDescription = "Edit Script")
+                            Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.md_edit_script))
                         }
                     } else {
                         Icon(Icons.Default.Lock, null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.padding(12.dp).size(20.dp))
@@ -96,7 +98,7 @@ fun ModuleDetailsScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                             Spacer(Modifier.width(12.dp))
-                            Text("MODULE INFO", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, letterSpacing = 1.2.sp)
+                            Text(stringResource(R.string.md_info), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, letterSpacing = 1.2.sp)
                         }
 
                         if (script.description != null) {
@@ -118,7 +120,7 @@ fun ModuleDetailsScreen(
                             ) {
                                 Icon(Icons.Default.Android, contentDescription = null, tint = Color.Black)
                                 Spacer(Modifier.width(8.dp))
-                                Text("Install Associated APK", fontWeight = FontWeight.Bold, color = Color.Black)
+                                Text(stringResource(R.string.md_install_apk), fontWeight = FontWeight.Bold, color = Color.Black)
                             }
                         }
 
@@ -126,11 +128,11 @@ fun ModuleDetailsScreen(
 
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                             Column {
-                                Text("Version", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(stringResource(R.string.common_version), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 Text(script.metadata.version ?: "1.0", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
                             }
                             Column(horizontalAlignment = Alignment.End) {
-                                Text("Author", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(stringResource(R.string.common_author), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 Text(script.metadata.author ?: "Unknown", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
                             }
                         }
@@ -140,7 +142,7 @@ fun ModuleDetailsScreen(
 
             if (script.metadata.targetPackages.isNotEmpty()) {
                 item {
-                    SectionHeader("RECOMMENDED FOR")
+                    SectionHeader(stringResource(R.string.md_recommended))
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -158,13 +160,13 @@ fun ModuleDetailsScreen(
 
             item {
                 Spacer(Modifier.height(8.dp))
-                SectionHeader("SCOPE APPLICATIONS")
+                SectionHeader(stringResource(R.string.md_scope_apps))
 
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Filter apps...") },
+                    placeholder = { Text(stringResource(R.string.common_filter_apps)) },
                     leadingIcon = { Icon(Icons.Default.Search, null) },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
@@ -214,7 +216,7 @@ fun ModuleDetailsScreen(
                                 if (isTargeted) {
                                     Spacer(Modifier.width(8.dp))
                                     Surface(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f), shape = RoundedCornerShape(4.dp)) {
-                                        Text("SUGGESTED", modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp), fontSize = 7.sp, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.primary)
+                                        Text(stringResource(R.string.md_suggested), modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp), fontSize = 7.sp, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.primary)
                                     }
                                 }
                             }
@@ -238,7 +240,7 @@ fun ModuleDetailsScreen(
                                     },
                                     modifier = Modifier.size(32.dp)
                                 ) {
-                                    Icon(Icons.Default.PlayArrow, contentDescription = "Launch", tint = MaterialTheme.colorScheme.primary)
+                                    Icon(Icons.Default.PlayArrow, contentDescription = stringResource(R.string.common_launch), tint = MaterialTheme.colorScheme.primary)
                                 }
                             }
 

@@ -19,8 +19,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import ox.fzer0x.snakeloader.HookInfo
 import ox.fzer0x.snakeloader.data.*
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.ReShiftCard
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
 import ox.fzer0x.snakeloader.ui.components.ReShiftButtonShape
@@ -52,7 +54,7 @@ fun MemoryInspectorScreen(
     Scaffold(
         topBar = {
             ReShiftTopAppBar(
-                title = "Memory Inspector & Patch Engine",
+                title = stringResource(R.string.mi_title),
                 onBack = onBack,
                 actions = {
                     Surface(
@@ -83,9 +85,9 @@ fun MemoryInspectorScreen(
                 containerColor = MaterialTheme.colorScheme.surface,
                 divider = {}
             ) {
-                Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }, text = { Text("AOB Scanner", fontWeight = FontWeight.Bold) })
+                Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }, text = { Text(stringResource(R.string.mi_aob), fontWeight = FontWeight.Bold) })
                 Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }, text = { Text("Patches (${patches.size})", fontWeight = FontWeight.Bold) })
-                Tab(selected = selectedTab == 2, onClick = { selectedTab = 2 }, text = { Text("Hooks", fontWeight = FontWeight.Bold) })
+                Tab(selected = selectedTab == 2, onClick = { selectedTab = 2 }, text = { Text(stringResource(R.string.mi_hooks), fontWeight = FontWeight.Bold) })
             }
 
             when (selectedTab) {
@@ -144,7 +146,7 @@ private fun AobScannerTab(
         OutlinedTextField(
             value = patternInput,
             onValueChange = { patternInput = it },
-            label = { Text("AOB Pattern (Wildcard ?? supported)") },
+            label = { Text(stringResource(R.string.mi_aob_hint)) },
             placeholder = { Text("e.g. 4F ?? 05 D2 80 00 00 39") },
             modifier = Modifier.fillMaxWidth(),
             shape = ReShiftButtonShape,
@@ -155,8 +157,8 @@ private fun AobScannerTab(
             OutlinedTextField(
                 value = moduleInput,
                 onValueChange = { moduleInput = it },
-                label = { Text("Target Module") },
-                placeholder = { Text("libil2cpp.so / empty for all") },
+                label = { Text(stringResource(R.string.mi_target_module)) },
+                placeholder = { Text(stringResource(R.string.mi_module_hint)) },
                 modifier = Modifier.weight(1f),
                 shape = ReShiftButtonShape,
                 singleLine = true
@@ -170,7 +172,7 @@ private fun AobScannerTab(
                 ) {
                     Icon(Icons.Default.Cancel, null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Cancel", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.common_cancel), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 }
             } else {
                 Button(
@@ -179,7 +181,7 @@ private fun AobScannerTab(
                 ) {
                     Icon(Icons.Default.Search, null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Scan AOB", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.mi_scan), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -222,7 +224,7 @@ private fun AobScannerTab(
                             ) {
                                 Icon(Icons.Default.Edit, null, modifier = Modifier.size(14.dp))
                                 Spacer(Modifier.width(4.dp))
-                                Text("Patch", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.mi_patch), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -366,7 +368,7 @@ private fun CreatePatchFromAobDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         shape = ReShiftDialogShape,
-        title = { Text("Create Memory Patch", fontWeight = FontWeight.Bold) },
+        title = { Text(stringResource(R.string.mi_create_patch), fontWeight = FontWeight.Bold) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text("${result.moduleName} + ${result.rvaOffsetHex}", fontSize = 12.sp, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary)
@@ -374,13 +376,13 @@ private fun CreatePatchFromAobDialog(
                 OutlinedTextField(
                     value = patchName,
                     onValueChange = { patchName = it },
-                    label = { Text("Patch Name") },
+                    label = { Text(stringResource(R.string.mi_patch_name)) },
                     shape = ReShiftButtonShape,
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
 
-                Text("ARM64 Opcode Preset:", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.mi_opcode_preset), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 PatchPreset.entries.forEach { preset ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -398,7 +400,7 @@ private fun CreatePatchFromAobDialog(
                     OutlinedTextField(
                         value = customHex,
                         onValueChange = { customHex = it },
-                        label = { Text("Custom Hex Bytes (e.g. 1F 20 03 D5)") },
+                        label = { Text(stringResource(R.string.mi_custom_hex)) },
                         shape = ReShiftButtonShape,
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
@@ -411,7 +413,7 @@ private fun CreatePatchFromAobDialog(
                 onClick = { onConfirm(patchName, selectedPreset, customHex) },
                 shape = ReShiftButtonShape
             ) {
-                Text("Apply & Save Patch", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.mi_apply_save), fontWeight = FontWeight.Bold)
             }
         },
         dismissButton = {

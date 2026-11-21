@@ -14,8 +14,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import ox.fzer0x.snakeloader.DownloadedScript
 import ox.fzer0x.snakeloader.ScriptManager
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +54,7 @@ fun ScriptEditorScreen(
                         },
                         enabled = hasChanges
                     ) {
-                        Icon(Icons.Default.Save, contentDescription = "Save", tint = if (hasChanges) MaterialTheme.colorScheme.primary else Color.Gray)
+                        Icon(Icons.Default.Save, contentDescription = stringResource(R.string.common_save), tint = if (hasChanges) MaterialTheme.colorScheme.primary else Color.Gray)
                     }
                 }
             )

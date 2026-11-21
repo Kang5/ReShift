@@ -31,11 +31,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import androidx.core.graphics.drawable.toBitmap
 import ox.fzer0x.snakeloader.AppInfo
 import ox.fzer0x.snakeloader.FridaManager
 import ox.fzer0x.snakeloader.decompiler.*
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.*
 import ox.fzer0x.snakeloader.ui.viewmodels.DecompilerMode
 import ox.fzer0x.snakeloader.ui.viewmodels.DexDecompilerViewModel
@@ -83,8 +85,8 @@ fun DexDecompilerScreen(
     Scaffold(
         topBar = {
             ReShiftTopAppBar(
-                title = "DEX & Native Decompiler",
-                subtitle = "Ghidra / Radare2 & DEX Inspector",
+                title = stringResource(R.string.dex_title),
+                subtitle = stringResource(R.string.dex_subtitle),
                 onBack = onBack
             )
         }
@@ -157,14 +159,14 @@ fun DexDecompilerScreen(
                                 onClick = { viewModel.setMode(context, DecompilerMode.DEX_CLASSES) },
                                 shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2)
                             ) {
-                                Text("DEX", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.dex_tab_dex), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                             }
                             SegmentedButton(
                                 selected = decompilerMode == DecompilerMode.NATIVE_ELF,
                                 onClick = { viewModel.setMode(context, DecompilerMode.NATIVE_ELF) },
                                 shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2)
                             ) {
-                                Text("ELF (.so)", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.dex_tab_elf), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                             }
                         }
 
@@ -195,7 +197,7 @@ fun DexDecompilerScreen(
                         .weight(1f)
                         .heightIn(min = 48.dp),
                     textStyle = LocalTextStyle.current.copy(fontSize = 11.sp),
-                    placeholder = { Text("Search classes, methods, offsets...", fontSize = 11.sp) },
+                    placeholder = { Text(stringResource(R.string.dex_search_hint), fontSize = 11.sp) },
                     leadingIcon = { Icon(Icons.Default.Search, null, modifier = Modifier.size(16.dp)) },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
@@ -220,7 +222,7 @@ fun DexDecompilerScreen(
                     ) {
                         Icon(Icons.Default.Build, null, modifier = Modifier.size(14.dp))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text("Studio", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.dex_studio), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -521,7 +523,7 @@ fun DexClassCard(
                                 modifier = Modifier.weight(1f)
                             )
                             Text(
-                                text = "INSPECT",
+                                text = stringResource(R.string.dex_inspect),
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary,
@@ -643,7 +645,7 @@ fun ElfLibraryCard(
                                 )
                             }
                             Text(
-                                text = "ASM / C",
+                                text = stringResource(R.string.dex_tab_asm),
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.secondary
@@ -771,7 +773,7 @@ fun DecompilerInspectorDialog(
                     onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End)
                 ) {
-                    Text("Close")
+                    Text(stringResource(R.string.common_close))
                 }
             }
         }
@@ -804,7 +806,7 @@ fun FridaHookStudioDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Frida & R2 Hook Studio",
+                        text = stringResource(R.string.dex_hook_studio),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
@@ -813,7 +815,7 @@ fun FridaHookStudioDialog(
                         color = MaterialTheme.colorScheme.primary
                     ) {
                         Text(
-                            text = "INTERACTIVE",
+                            text = stringResource(R.string.dex_interactive),
                             fontSize = 9.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimary,
@@ -831,7 +833,7 @@ fun FridaHookStudioDialog(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Log Function Arguments", fontSize = 12.sp)
+                        Text(stringResource(R.string.dex_log_args), fontSize = 12.sp)
                         Switch(
                             checked = options.logArgs,
                             onCheckedChange = { onOptionsChanged(options.copy(logArgs = it)) }
@@ -843,7 +845,7 @@ fun FridaHookStudioDialog(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Log Backtrace / StackTrace", fontSize = 12.sp)
+                        Text(stringResource(R.string.dex_log_bt), fontSize = 12.sp)
                         Switch(
                             checked = options.logStackTrace,
                             onCheckedChange = { onOptionsChanged(options.copy(logStackTrace = it)) }
@@ -855,7 +857,7 @@ fun FridaHookStudioDialog(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Override Return Value", fontSize = 12.sp)
+                        Text(stringResource(R.string.dex_override_ret), fontSize = 12.sp)
                         Switch(
                             checked = options.overrideReturn,
                             onCheckedChange = { onOptionsChanged(options.copy(overrideReturn = it)) }
@@ -866,7 +868,7 @@ fun FridaHookStudioDialog(
                         OutlinedTextField(
                             value = options.customReturnValue,
                             onValueChange = { onOptionsChanged(options.copy(customReturnValue = it)) },
-                            label = { Text("Custom Return Value (e.g., true, false, 0x1)", fontSize = 10.sp) },
+                            label = { Text(stringResource(R.string.dex_custom_ret), fontSize = 10.sp) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
                         )
@@ -877,7 +879,7 @@ fun FridaHookStudioDialog(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Patch Native Memory (ARM64 RET)", fontSize = 12.sp)
+                        Text(stringResource(R.string.dex_patch_native), fontSize = 12.sp)
                         Switch(
                             checked = options.memoryPatching,
                             onCheckedChange = { onOptionsChanged(options.copy(memoryPatching = it)) }
@@ -921,7 +923,7 @@ fun FridaHookStudioDialog(
                         clipboard.setPrimaryClip(ClipData.newPlainText("Frida Snippet", script))
                         Toast.makeText(context, "Copied to Clipboard!", Toast.LENGTH_SHORT).show()
                     }) {
-                        Text("Copy JS")
+                        Text(stringResource(R.string.dex_copy_js))
                     }
 
                     Spacer(modifier = Modifier.width(8.dp))
@@ -933,7 +935,7 @@ fun FridaHookStudioDialog(
                         },
                         shape = ReShiftButtonShape
                     ) {
-                        Text("Inject via Frida")
+                        Text(stringResource(R.string.dex_inject_frida))
                     }
                 }
             }
@@ -957,7 +959,7 @@ fun DecompilerAppPickerDialog(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "Select Application",
+                    text = stringResource(R.string.common_select_app),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
@@ -1001,7 +1003,7 @@ fun DecompilerAppPickerDialog(
                     onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End)
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.common_cancel))
                 }
             }
         }

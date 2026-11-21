@@ -26,6 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.theme.SuccessGreen
 
 @Composable
@@ -108,12 +110,12 @@ fun ReShiftBootAnimation(
                 ) {
                     Icon(
                         imageVector = Icons.Default.FastForward,
-                        contentDescription = "Skip",
+                        contentDescription = stringResource(R.string.boot_skip),
                         modifier = Modifier.size(14.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "SKIP",
+                        text = stringResource(R.string.boot_skip_upper),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.Monospace,
@@ -212,7 +214,7 @@ fun ReShiftBootAnimation(
 
             // RE-SHIFT BRAND HEADING
             Text(
-                text = "SYSTEM BOOT SEQUENCE",
+                text = stringResource(R.string.boot_sequence),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,

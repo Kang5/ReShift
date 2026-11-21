@@ -1,0 +1,68 @@
+version = 2
+
+[module]
+type = "android-app"
+name = "app"
+languageLevel = "JAVA_21"
+output = "build/classes"
+
+[sourceSets.androidTest]
+scope = "TEST_IMPLEMENTATION"
+java = ["src/androidTest/java", "src/androidTest/kotlin"]
+resources = ["src/androidTest/resources"]
+
+[sourceSets.debug]
+scope = "IMPLEMENTATION"
+aidl = ["src/debug/aidl"]
+assets = ["src/debug/assets"]
+java = ["src/debug/java", "src/debug/kotlin"]
+jniLibs = ["src/debug/jniLibs"]
+res = ["src/debug/res"]
+resources = ["src/debug/resources"]
+
+[sourceSets.main]
+scope = "IMPLEMENTATION"
+aidl = ["src/main/aidl"]
+assets = ["src/main/assets"]
+java = ["src/main/java", "src/main/kotlin"]
+jniLibs = ["src/main/jniLibs"]
+res = ["src/main/res"]
+resources = ["src/main/resources"]
+
+[sourceSets.release]
+scope = "IMPLEMENTATION"
+aidl = ["src/release/aidl"]
+assets = ["src/release/assets"]
+java = ["src/release/java", "src/release/kotlin"]
+jniLibs = ["src/release/jniLibs"]
+res = ["src/release/res"]
+resources = ["src/release/resources"]
+
+[sourceSets.test]
+scope = "TEST_IMPLEMENTATION"
+java = ["src/test/java", "src/test/kotlin"]
+resources = ["src/test/resources"]
+
+[dependencies]
+implementation = [{ platform = "androidx.compose:compose-bom:2026.06.01" }, "androidx.activity:activity-compose:1.13.0", "androidx.compose.material3:material3", "androidx.compose.material:material-icons-extended", "androidx.compose.ui:ui", "androidx.compose.ui:ui-graphics", "androidx.compose.ui:ui-tooling-preview", "androidx.core:core-ktx:1.19.0", "androidx.lifecycle:lifecycle-runtime-ktx:2.11.0", "androidx.lifecycle:lifecycle-process:2.11.0", "androidx.navigation:navigation-compose:2.8.5", "com.google.code.gson:gson:2.11.0", "io.insert-koin:koin-android:4.0.0", "io.insert-koin:koin-androidx-compose:4.0.0", "com.github.topjohnwu.libsu:core:6.0.0", "com.github.topjohnwu.libsu:service:6.0.0", "kotlin-stdlib"]
+compileOnly = ["io.github.libxposed:api:102.0.0", "de.robv.android.xposed:api:82"]
+testImplementation = ["junit:junit:4.13.2", "androidx.compose.ui:ui-test-junit4", "androidx.test.espresso:espresso-core:3.7.0", "androidx.test.ext:junit:1.3.0"]
+
+[dependencies.debug]
+implementation = ["androidx.compose.ui:ui-test-manifest", "androidx.compose.ui:ui-tooling"]
+
+[android]
+namespace = "ox.fzer0x.snakeloader"
+compileSdk = 37
+minSdk = 29
+targetSdk = 35
+manifest = "src/main/AndroidManifest.xml"
+versionCode = 121
+versionName = "1.2.1"
+isApplication = true
+manifestPlaceholders = []
+buildConfigFields = []
+buildTypes = [{ name = "debug", debuggable = true, minifyEnabled = false, shrinkResources = false }, { name = "release", debuggable = false, minifyEnabled = true, shrinkResources = true, proguardFiles = ["proguard-android-optimize.txt", "proguard-rules.pro"] }]
+nonTransitiveRClass = true
+compose = true
+buildConfig = false

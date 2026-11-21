@@ -21,8 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import ox.fzer0x.snakeloader.FridaManager
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.ReShiftCard
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
 import ox.fzer0x.snakeloader.ui.components.ReShiftButtonShape
@@ -53,7 +55,7 @@ fun StalkerToolboxScreen(
     Scaffold(
         topBar = {
             ReShiftTopAppBar(
-                title = "Code Flow Stalker",
+                title = stringResource(R.string.st_title),
                 onBack = onBack
             )
         }
@@ -74,7 +76,7 @@ fun StalkerToolboxScreen(
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Radar, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                                 Spacer(Modifier.width(12.dp))
-                                Text("CONFIGURATION", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, letterSpacing = 1.2.sp)
+                                Text(stringResource(R.string.st_config), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, letterSpacing = 1.2.sp)
                             }
 
                             Surface(
@@ -121,7 +123,7 @@ fun StalkerToolboxScreen(
                                 } else {
                                     Icon(Icons.Default.Link, null, modifier = Modifier.size(18.dp))
                                     Spacer(Modifier.width(8.dp))
-                                    Text("Establish RPC Bridge", fontWeight = FontWeight.Bold)
+                                    Text(stringResource(R.string.st_rpc), fontWeight = FontWeight.Bold)
                                 }
                             }
                         }
@@ -135,9 +137,9 @@ fun StalkerToolboxScreen(
                         OutlinedTextField(
                             value = moduleFilter,
                             onValueChange = { moduleFilter = it },
-                            label = { Text("Module Filter (e.g. libunity.so)") },
+                            label = { Text(stringResource(R.string.st_module_filter)) },
                             modifier = Modifier.fillMaxWidth(),
-                            placeholder = { Text("Capture all modules") },
+                            placeholder = { Text(stringResource(R.string.st_capture_all)) },
                             shape = ReShiftButtonShape,
                             singleLine = true
                         )
@@ -165,8 +167,8 @@ fun StalkerToolboxScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text("Real-time Trace", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                            Text("Instrument code flow dynamically", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(stringResource(R.string.st_realtime), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                            Text(stringResource(R.string.st_instrument), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
 
                         Button(
@@ -189,7 +191,7 @@ fun StalkerToolboxScreen(
             }
 
             item {
-                SectionHeader("OPERATIONAL GUIDE")
+                SectionHeader(stringResource(R.string.st_guide))
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     OutlinedInfoItem(Icons.Default.Speed, "Identifies active code paths by monitoring function call frequencies.")
                     OutlinedInfoItem(Icons.Default.Security, "Bypasses basic anti-debugging by observing flow branch points.")
@@ -214,7 +216,7 @@ fun StalkerToolboxScreen(
             }
 
             if (stalkerManager.hotPaths.isNotEmpty()) {
-                item { SectionHeader("HOT PATH ANALYSIS") }
+                item { SectionHeader(stringResource(R.string.st_hot_path)) }
                 items(stalkerManager.hotPaths) { hit ->
                     ReShiftCard {
                         Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -236,7 +238,7 @@ fun StalkerToolboxScreen(
             }
 
             if (stalkerManager.callTree.isNotEmpty()) {
-                item { SectionHeader("CALL HIERARCHY SEGMENTS") }
+                item { SectionHeader(stringResource(R.string.st_call_hier)) }
                 items(stalkerManager.callTree) { node ->
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(start = (node.depth * 8).dp),

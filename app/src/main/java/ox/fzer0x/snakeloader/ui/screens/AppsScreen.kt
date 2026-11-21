@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -37,6 +38,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ox.fzer0x.snakeloader.AppInfo
 import ox.fzer0x.snakeloader.FridaManager
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ScriptManager
 import ox.fzer0x.snakeloader.ui.components.ReShiftCard
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
@@ -66,25 +68,25 @@ fun AppsScreen(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             ReShiftTopAppBar(
-                title = "Applications",
+                title = stringResource(R.string.apps_title),
                 actions = {
                     IconButton(onClick = { showMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Options")
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_options))
                     }
                     DropdownMenu(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Close") },
+                            text = { Text(stringResource(R.string.action_close)) },
                             onClick = {
                                 showMenu = false
                                 context.findActivity()?.finishAndRemoveTask()
                             },
-                            leadingIcon = { Icon(Icons.Default.Close, contentDescription = "Close ReShift", tint = MaterialTheme.colorScheme.error) }
+                            leadingIcon = { Icon(Icons.Default.Close, contentDescription = stringResource(R.string.cd_close_app), tint = MaterialTheme.colorScheme.error) }
                         )
                         DropdownMenuItem(
-                            text = { Text("Frida Toolbox") },
+                            text = { Text(stringResource(R.string.action_frida_toolbox)) },
                             onClick = {
                                 showMenu = false
                                 onNavigateToToolbox()
@@ -92,7 +94,7 @@ fun AppsScreen(
                             leadingIcon = { Icon(Icons.Default.Terminal, null) }
                         )
                         DropdownMenuItem(
-                            text = { Text("Settings") },
+                            text = { Text(stringResource(R.string.action_settings)) },
                             onClick = {
                                 showMenu = false
                                 onNavigateToSettings()
@@ -100,7 +102,7 @@ fun AppsScreen(
                             leadingIcon = { Icon(Icons.Default.Settings, null) }
                         )
                         DropdownMenuItem(
-                            text = { Text("Join Community") },
+                            text = { Text(stringResource(R.string.action_join_community)) },
                             onClick = {
                                 showMenu = false
                                 try {
@@ -125,7 +127,7 @@ fun AppsScreen(
                     value = viewModel.searchQuery,
                     onValueChange = { viewModel.onSearchQueryChange(it) },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Search apps...") },
+                    placeholder = { Text(stringResource(R.string.apps_search_placeholder)) },
                     leadingIcon = { Icon(Icons.Default.Search, null) },
                     trailingIcon = {
                         if (viewModel.searchQuery.isNotEmpty()) {
@@ -174,12 +176,12 @@ fun AppsScreen(
                         )
                         Spacer(Modifier.height(16.dp))
                         Text(
-                            "No applications found",
+                            stringResource(R.string.apps_empty_title),
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.outline
                         )
                         Text(
-                            "Try a different search or filter.",
+                            stringResource(R.string.apps_empty_hint),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.outline
                         )

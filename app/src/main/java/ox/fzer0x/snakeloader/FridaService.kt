@@ -24,7 +24,7 @@ class FridaService : Service() {
         super.onCreate()
         Log.d(TAG, "onCreate")
         createNotificationChannel()
-        promoteToForeground("Initializing...")
+        promoteToForeground(getString(R.string.frida_initializing))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -54,7 +54,7 @@ class FridaService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
                 CHANNEL_ID,
-                "Frida Execution Service",
+                getString(R.string.frida_channel_name),
                 NotificationManager.IMPORTANCE_LOW
             )
             val manager = getSystemService(NotificationManager::class.java)
@@ -64,8 +64,8 @@ class FridaService : Service() {
 
     private fun createNotification(packageName: String): Notification {
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("ReShift Active")
-            .setContentText("Frida script running for $packageName")
+            .setContentTitle(getString(R.string.frida_notif_title))
+            .setContentText(getString(R.string.frida_notif_text, packageName))
             .setSmallIcon(android.R.drawable.ic_media_play)
             .setOngoing(true)
             .build()

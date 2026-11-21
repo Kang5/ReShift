@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.graphics.drawable.toBitmap
@@ -51,6 +52,7 @@ import ox.fzer0x.snakeloader.ai.AgentExecutionMode
 import ox.fzer0x.snakeloader.ai.AiGoalPreset
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
 import ox.fzer0x.snakeloader.ui.components.findActivity
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.viewmodels.AutonomousAgentState
 import ox.fzer0x.snakeloader.ui.viewmodels.DumperEngine
 import ox.fzer0x.snakeloader.ui.viewmodels.Il2CppClassData
@@ -103,26 +105,26 @@ fun Il2CppScreen(
                     IconButton(onClick = { showGlobalAiDialog = true }) {
                         Icon(
                             Icons.Default.AutoAwesome,
-                            contentDescription = "Global AI Agent",
+                            contentDescription = stringResource(R.string.il2cpp_global_ai),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     IconButton(onClick = { viewModel.loadSavedDump(context) }) {
                         Icon(
                             Icons.Default.FolderOpen,
-                            contentDescription = "Load Cache",
+                            contentDescription = stringResource(R.string.il2cpp_load_cache),
                             tint = MaterialTheme.colorScheme.secondary
                         )
                     }
                     IconButton(onClick = { showExportMenu = true }) {
-                        Icon(Icons.Default.IosShare, contentDescription = "Export")
+                        Icon(Icons.Default.IosShare, contentDescription = stringResource(R.string.il2cpp_export))
                     }
                     DropdownMenu(
                         expanded = showExportMenu,
                         onDismissRequest = { showExportMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Export as JSON Dump") },
+                            text = { Text(stringResource(R.string.il2cpp_export_json)) },
                             onClick = {
                                 showExportMenu = false
                                 val path = viewModel.exportDumpAsJson(context)
@@ -135,7 +137,7 @@ fun Il2CppScreen(
                             leadingIcon = { Icon(Icons.Default.Code, null) }
                         )
                         DropdownMenuItem(
-                            text = { Text("Export as C# Header (.cs)") },
+                            text = { Text(stringResource(R.string.il2cpp_export_cs)) },
                             onClick = {
                                 showExportMenu = false
                                 val path = viewModel.exportDumpAsCSharp(context)
@@ -151,19 +153,19 @@ fun Il2CppScreen(
 
                     var showOptionMenu by remember { mutableStateOf(false) }
                     IconButton(onClick = { showOptionMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Options")
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.il2cpp_options))
                     }
                     DropdownMenu(
                         expanded = showOptionMenu,
                         onDismissRequest = { showOptionMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Close") },
+                            text = { Text(stringResource(R.string.il2cpp_close)) },
                             onClick = {
                                 showOptionMenu = false
                                 context.findActivity()?.finishAndRemoveTask()
                             },
-                            leadingIcon = { Icon(Icons.Default.Close, contentDescription = "Close ReShift", tint = MaterialTheme.colorScheme.error) }
+                            leadingIcon = { Icon(Icons.Default.Close, contentDescription = stringResource(R.string.il2cpp_close_reshift), tint = MaterialTheme.colorScheme.error) }
                         )
                     }
                 }
@@ -196,21 +198,21 @@ fun Il2CppScreen(
                     ) {
                         MetricBadge(
                             icon = Icons.Default.Category,
-                            label = "Classes",
+                            label = stringResource(R.string.il2cpp_classes),
                             value = if (totalMatches > 0) "$totalMatches" else "${viewModel.classes.value.size}",
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.weight(1f)
                         )
                         MetricBadge(
                             icon = Icons.Default.Android,
-                            label = "Target",
+                            label = stringResource(R.string.il2cpp_target),
                             value = selectedApp?.label ?: "None",
                             color = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier.weight(1f)
                         )
                         MetricBadge(
                             icon = if (dumperEngine == DumperEngine.UE4) Icons.Default.ViewInAr else Icons.Default.Storage,
-                            label = "Engine",
+                            label = stringResource(R.string.il2cpp_engine),
                             value = dumperEngine.displayName,
                             color = MaterialTheme.colorScheme.tertiary,
                             modifier = Modifier.weight(1f)
@@ -294,7 +296,7 @@ fun Il2CppScreen(
                             ) {
                                 Icon(Icons.Default.TouchApp, null, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("Select", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.il2cpp_select), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                             }
                         }
 
@@ -315,7 +317,7 @@ fun Il2CppScreen(
                                         modifier = Modifier.size(18.dp)
                                     )
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("Engine Dumper Tool", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                    Text(stringResource(R.string.il2cpp_dumper_tool), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                                 }
                                 Surface(
                                     color = MaterialTheme.colorScheme.primaryContainer,
@@ -338,7 +340,7 @@ fun Il2CppScreen(
                                 FilterChip(
                                     selected = dumperEngine == DumperEngine.IL2CPP,
                                     onClick = { viewModel.setDumperEngine(DumperEngine.IL2CPP) },
-                                    label = { Text("Unity IL2CPP", fontSize = 12.sp, fontWeight = FontWeight.SemiBold) },
+                                    label = { Text(stringResource(R.string.il2cpp_unity), fontSize = 12.sp, fontWeight = FontWeight.SemiBold) },
                                     leadingIcon = {
                                         if (dumperEngine == DumperEngine.IL2CPP) {
                                             Icon(Icons.Default.Check, null, modifier = Modifier.size(14.dp))
@@ -402,7 +404,7 @@ fun Il2CppScreen(
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Icon(Icons.Default.Timer, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("Frida Injection Delay", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                    Text(stringResource(R.string.il2cpp_inject_delay), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                                 }
                                 Surface(
                                     color = MaterialTheme.colorScheme.primaryContainer,
@@ -462,7 +464,7 @@ fun Il2CppScreen(
                                 ) {
                                     Icon(Icons.Default.Stop, null, modifier = Modifier.size(20.dp))
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Stop Inspection", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                    Text(stringResource(R.string.il2cpp_stop_inspect), fontWeight = FontWeight.Bold, fontSize = 14.sp)
                                 }
                             } else {
                                 Button(
@@ -473,7 +475,7 @@ fun Il2CppScreen(
                                 ) {
                                     Icon(Icons.Default.PlayArrow, null, modifier = Modifier.size(20.dp))
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Launch & Inspect", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                    Text(stringResource(R.string.il2cpp_launch_inspect), fontWeight = FontWeight.Bold, fontSize = 14.sp)
                                 }
                             }
 
@@ -489,7 +491,7 @@ fun Il2CppScreen(
                                 ) {
                                     Icon(Icons.Default.Cached, null, modifier = Modifier.size(16.dp))
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("Cached Dump", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                                    Text(stringResource(R.string.il2cpp_cached_dump), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                                 }
 
                                 OutlinedButton(
@@ -503,7 +505,7 @@ fun Il2CppScreen(
                                 ) {
                                     Icon(Icons.Default.CleaningServices, null, modifier = Modifier.size(16.dp))
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("Clear All", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                                    Text(stringResource(R.string.il2cpp_clear_all), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                                 }
                             }
                         }
@@ -558,14 +560,14 @@ fun Il2CppScreen(
                     OutlinedTextField(
                         value = searchText,
                         onValueChange = { viewModel.setSearchText(it) },
-                        placeholder = { Text("Search classes, methods, fields, or offsets...") },
+                        placeholder = { Text(stringResource(R.string.il2cpp_search_hint)) },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(14.dp),
                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
                         trailingIcon = {
                             if (searchText.isNotEmpty()) {
                                 IconButton(onClick = { viewModel.setSearchText("") }) {
-                                    Icon(Icons.Default.Close, contentDescription = "Clear")
+                                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.il2cpp_clear))
                                 }
                             }
                         },
@@ -617,7 +619,7 @@ fun Il2CppScreen(
                             ) {
                                 Icon(Icons.Default.CleaningServices, contentDescription = null, modifier = Modifier.size(11.dp))
                                 Spacer(modifier = Modifier.width(3.dp))
-                                Text("Prune DB", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.il2cpp_prune_db), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                             }
 
                             Surface(
@@ -688,7 +690,7 @@ fun Il2CppScreen(
                                     Button(onClick = { viewModel.openAppPicker() }) {
                                         Icon(Icons.Default.TouchApp, null, modifier = Modifier.size(16.dp))
                                         Spacer(modifier = Modifier.width(6.dp))
-                                        Text("Select Target App")
+                                        Text(stringResource(R.string.il2cpp_select_target_app))
                                     }
                                 }
                             }
@@ -733,7 +735,7 @@ fun Il2CppScreen(
             title = { Text(generatedCodeDialog.first, fontSize = 16.sp, fontWeight = FontWeight.Bold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Copy this Frida snippet or save it directly into your script environment:", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
+                    Text(stringResource(R.string.il2cpp_copy_hint), fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
                     ScrollableCodePreview(
                         code = generatedCodeDialog.second,
                         maxHeight = 320.dp,
@@ -756,7 +758,7 @@ fun Il2CppScreen(
                 ) {
                     Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text("Copy Snippet")
+                    Text(stringResource(R.string.il2cpp_copy_snippet))
                 }
             },
             dismissButton = {
@@ -792,7 +794,7 @@ fun Il2CppScreen(
                             FilterChip(
                                 selected = currentProvider == "GEMINI",
                                 onClick = { viewModel.setAiProvider("GEMINI") },
-                                label = { Text("Gemini Cloud", fontSize = 10.sp) },
+                                label = { Text(stringResource(R.string.il2cpp_provider_gemini), fontSize = 10.sp) },
                                 leadingIcon = { Icon(Icons.Default.Cloud, null, modifier = Modifier.size(14.dp)) }
                             )
                         }
@@ -800,7 +802,7 @@ fun Il2CppScreen(
                             FilterChip(
                                 selected = currentProvider == "OLLAMA",
                                 onClick = { viewModel.setAiProvider("OLLAMA") },
-                                label = { Text("Ollama (Local/PC)", fontSize = 10.sp) },
+                                label = { Text(stringResource(R.string.il2cpp_provider_ollama), fontSize = 10.sp) },
                                 leadingIcon = { Icon(Icons.Default.Dns, null, modifier = Modifier.size(14.dp)) }
                             )
                         }
@@ -808,7 +810,7 @@ fun Il2CppScreen(
                             FilterChip(
                                 selected = currentProvider == "ON_DEVICE_GGUF",
                                 onClick = { viewModel.setAiProvider("ON_DEVICE_GGUF") },
-                                label = { Text("On-Device GGUF", fontSize = 10.sp) },
+                                label = { Text(stringResource(R.string.il2cpp_provider_gguf), fontSize = 10.sp) },
                                 leadingIcon = { Icon(Icons.Default.Smartphone, null, modifier = Modifier.size(14.dp)) }
                             )
                         }
@@ -818,7 +820,7 @@ fun Il2CppScreen(
                         val downloadedModels = remember { viewModel.getDownloadedGgufModels(context) }
                         val activePath = viewModel.getOnDeviceModelPath()
 
-                        Text("On-Device LLM Modell (1.5B / 3B / 7B):", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                        Text(stringResource(R.string.il2cpp_ondevice_models), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
 
                         if (downloadedModels.isEmpty()) {
                             Text(
@@ -854,7 +856,7 @@ fun Il2CppScreen(
                         }
                     }
 
-                    Text("Select research goal or instruct AI Agent:", fontSize = 11.sp, color = MaterialTheme.colorScheme.outline)
+                    Text(stringResource(R.string.il2cpp_goal_hint), fontSize = 11.sp, color = MaterialTheme.colorScheme.outline)
 
                     LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -874,7 +876,7 @@ fun Il2CppScreen(
                         OutlinedTextField(
                             value = customGoalText,
                             onValueChange = { customGoalText = it },
-                            placeholder = { Text("e.g. Set currentHealth to 9999 and skip damage check...") },
+                            placeholder = { Text(stringResource(R.string.il2cpp_goal_example)) },
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(10.dp)
                         )
@@ -884,7 +886,7 @@ fun Il2CppScreen(
                         LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                         Text(viewModel.aiAgentStatus.value, fontSize = 11.sp, color = MaterialTheme.colorScheme.primary)
                     } else if (viewModel.aiGeneratedScript.value != null) {
-                        Text("Generated Frida Script:", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.il2cpp_generated_script), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                         ScrollableCodePreview(
                             code = viewModel.aiGeneratedScript.value!!,
                             maxHeight = 220.dp,
@@ -927,7 +929,7 @@ fun Il2CppScreen(
                         ) {
                             Icon(Icons.Default.AutoAwesome, null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("Generate")
+                            Text(stringResource(R.string.il2cpp_generate))
                         }
                     } else {
                         Button(
@@ -945,7 +947,7 @@ fun Il2CppScreen(
                         ) {
                             Icon(Icons.Default.PlayArrow, null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("Deploy & Test")
+                            Text(stringResource(R.string.il2cpp_deploy_test))
                         }
                     }
                 }
@@ -1004,7 +1006,7 @@ fun Il2CppScreen(
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Icon(Icons.Default.AutoAwesome, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("ReShift AI Agent (BETA)", fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                                    Text(stringResource(R.string.il2cpp_ai_agent_title), fontSize = 17.sp, fontWeight = FontWeight.Bold)
                                 }
                                 val loadedClassCount = viewModel.classes.value.size.coerceAtLeast(viewModel.totalMatchesCount.value)
                                 Text(
@@ -1019,17 +1021,17 @@ fun Il2CppScreen(
                                 if (isAgentRunning) viewModel.abortAutonomousAgent()
                                 showGlobalAiDialog = false
                             }) {
-                                Icon(Icons.Default.Close, contentDescription = "Close AI Agent")
+                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.il2cpp_close_agent))
                             }
                         },
                         actions = {
                             if (isAgentRunning) {
                                 IconButton(onClick = { viewModel.abortAutonomousAgent() }) {
-                                    Icon(Icons.Default.Stop, contentDescription = "Abort Agent", tint = MaterialTheme.colorScheme.error)
+                                    Icon(Icons.Default.Stop, contentDescription = stringResource(R.string.il2cpp_abort_agent), tint = MaterialTheme.colorScheme.error)
                                 }
                             } else {
                                 IconButton(onClick = { viewModel.resetAutonomousAgent() }) {
-                                    Icon(Icons.Default.RestartAlt, contentDescription = "Reset Agent", tint = MaterialTheme.colorScheme.outline)
+                                    Icon(Icons.Default.RestartAlt, contentDescription = stringResource(R.string.il2cpp_reset_agent), tint = MaterialTheme.colorScheme.outline)
                                 }
                             }
                         }
@@ -1084,7 +1086,7 @@ fun Il2CppScreen(
                                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                 shape = RoundedCornerShape(10.dp)
                             ) {
-                                Text("Open Settings", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                Text(stringResource(R.string.il2cpp_open_settings), fontWeight = FontWeight.Bold, fontSize = 12.sp)
                             }
                         },
                         dismissButton = {
@@ -1095,7 +1097,7 @@ fun Il2CppScreen(
                                 },
                                 shape = RoundedCornerShape(10.dp)
                             ) {
-                                Text("Understood", fontSize = 12.sp)
+                                Text(stringResource(R.string.il2cpp_understood), fontSize = 12.sp)
                             }
                         }
                     )
@@ -1136,8 +1138,8 @@ fun Il2CppScreen(
                                         value = refinedPromptInput,
                                         onValueChange = { refinedPromptInput = it },
                                         modifier = Modifier.fillMaxWidth(),
-                                        label = { Text("Refinement note", fontSize = 11.sp) },
-                                        placeholder = { Text("e.g. 'Try hooking get_Coins or AddMoney'", fontSize = 11.sp) },
+                                        label = { Text(stringResource(R.string.il2cpp_refine_note), fontSize = 11.sp) },
+                                        placeholder = { Text(stringResource(R.string.il2cpp_refine_example), fontSize = 11.sp) },
                                         maxLines = 3,
                                         textStyle = LocalTextStyle.current.copy(fontSize = 12.sp)
                                     )
@@ -1152,7 +1154,7 @@ fun Il2CppScreen(
                             ) {
                                 Icon(Icons.Default.Check, null, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("YES! Goal achieved", fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.il2cpp_goal_yes), fontWeight = FontWeight.Bold)
                             }
                         },
                         dismissButton = {
@@ -1164,7 +1166,7 @@ fun Il2CppScreen(
                                 ) {
                                     Icon(Icons.Default.Close, null, modifier = Modifier.size(16.dp))
                                     Spacer(modifier = Modifier.width(4.dp))
-                                    Text("No, adjust prompt", fontWeight = FontWeight.Bold)
+                                    Text(stringResource(R.string.il2cpp_goal_no), fontWeight = FontWeight.Bold)
                                 }
                             } else {
                                 Button(
@@ -1212,7 +1214,7 @@ fun Il2CppScreen(
                                 ) {
                                     Icon(Icons.Default.Speed, null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("Telemetry & Hardware", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    Text(stringResource(R.string.il2cpp_telemetry), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                 }
                                 Surface(
                                     color = MaterialTheme.colorScheme.primaryContainer,
@@ -1235,7 +1237,7 @@ fun Il2CppScreen(
                                     shape = RoundedCornerShape(10.dp)
                                 ) {
                                     Column(modifier = Modifier.padding(8.dp)) {
-                                        Text("Free RAM", fontSize = 10.sp, color = MaterialTheme.colorScheme.outline)
+                                        Text(stringResource(R.string.il2cpp_free_ram), fontSize = 10.sp, color = MaterialTheme.colorScheme.outline)
                                         Text("${telemetry.freeRamMb} / ${telemetry.totalRamMb} MB", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                     }
                                 }
@@ -1245,7 +1247,7 @@ fun Il2CppScreen(
                                     shape = RoundedCornerShape(10.dp)
                                 ) {
                                     Column(modifier = Modifier.padding(8.dp)) {
-                                        Text("Inference Latency", fontSize = 10.sp, color = MaterialTheme.colorScheme.outline)
+                                        Text(stringResource(R.string.il2cpp_latency), fontSize = 10.sp, color = MaterialTheme.colorScheme.outline)
                                         Text(if (telemetry.lastInferenceTimeMs > 0) "${telemetry.lastInferenceTimeMs} ms" else "Idle", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                     }
                                 }
@@ -1260,14 +1262,14 @@ fun Il2CppScreen(
                                 FilterChip(
                                     selected = !telemetry.useVulkanGpu,
                                     onClick = { viewModel.setUseVulkanGpu(false) },
-                                    label = { Text("CPU NEON", fontSize = 11.sp) },
+                                    label = { Text(stringResource(R.string.il2cpp_cpu_neon), fontSize = 11.sp) },
                                     leadingIcon = { Icon(Icons.Default.Memory, null, modifier = Modifier.size(14.dp)) },
                                     modifier = Modifier.weight(1f)
                                 )
                                 FilterChip(
                                     selected = telemetry.useVulkanGpu,
                                     onClick = { viewModel.setUseVulkanGpu(true) },
-                                    label = { Text("Vulkan GPU", fontSize = 11.sp) },
+                                    label = { Text(stringResource(R.string.il2cpp_vulkan), fontSize = 11.sp) },
                                     leadingIcon = { Icon(Icons.Default.ElectricBolt, null, modifier = Modifier.size(14.dp)) },
                                     modifier = Modifier.weight(1f)
                                 )
@@ -1284,7 +1286,7 @@ fun Il2CppScreen(
                             modifier = Modifier.padding(12.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text("LLM Engine & Validation Settings", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                            Text(stringResource(R.string.il2cpp_llm_settings), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
 
                             LazyRow(
                                 modifier = Modifier.fillMaxWidth(),
@@ -1302,7 +1304,7 @@ fun Il2CppScreen(
                                     FilterChip(
                                         selected = currentProvider == "OLLAMA",
                                         onClick = { viewModel.setAiProvider("OLLAMA") },
-                                        label = { Text("Ollama Local", fontSize = 11.sp) },
+                                        label = { Text(stringResource(R.string.il2cpp_ollama_local), fontSize = 11.sp) },
                                         leadingIcon = { Icon(Icons.Default.Dns, null, modifier = Modifier.size(14.dp)) }
                                     )
                                 }
@@ -1324,7 +1326,7 @@ fun Il2CppScreen(
                                     checked = cloudValEnabled,
                                     onCheckedChange = { viewModel.setAutonomousCloudValidation(it) }
                                 )
-                                Text("Enable Cloud Static Analysis Validation", fontSize = 11.sp, fontWeight = FontWeight.Medium)
+                                Text(stringResource(R.string.il2cpp_cloud_validation), fontSize = 11.sp, fontWeight = FontWeight.Medium)
                             }
 
                             Row(
@@ -1335,7 +1337,7 @@ fun Il2CppScreen(
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Icon(Icons.Default.CleaningServices, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("Smart Database Clean:", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                    Text(stringResource(R.string.il2cpp_smart_clean), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                 }
                                 OutlinedButton(
                                     onClick = {
@@ -1347,7 +1349,7 @@ fun Il2CppScreen(
                                     shape = RoundedCornerShape(8.dp),
                                     modifier = Modifier.height(28.dp)
                                 ) {
-                                    Text("Prune DB Noise", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                    Text(stringResource(R.string.il2cpp_prune_noise), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
 
@@ -1358,7 +1360,7 @@ fun Il2CppScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalArrangement = Arrangement.spacedBy(4.dp)
                             ) {
-                                Text("Agent Execution Mode:", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.il2cpp_exec_mode), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                 val currentMode = viewModel.agentExecutionMode.value
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
@@ -1367,19 +1369,19 @@ fun Il2CppScreen(
                                     FilterChip(
                                         selected = currentMode == AgentExecutionMode.AUTO,
                                         onClick = { viewModel.setAgentExecutionMode(AgentExecutionMode.AUTO) },
-                                        label = { Text("Auto", fontSize = 10.sp, maxLines = 1) },
+                                        label = { Text(stringResource(R.string.il2cpp_mode_auto), fontSize = 10.sp, maxLines = 1) },
                                         modifier = Modifier.weight(1f)
                                     )
                                     FilterChip(
                                         selected = currentMode == AgentExecutionMode.SPAWN,
                                         onClick = { viewModel.setAgentExecutionMode(AgentExecutionMode.SPAWN) },
-                                        label = { Text("Spawn (-f)", fontSize = 10.sp, maxLines = 1) },
+                                        label = { Text(stringResource(R.string.il2cpp_mode_spawn), fontSize = 10.sp, maxLines = 1) },
                                         modifier = Modifier.weight(1f)
                                     )
                                     FilterChip(
                                         selected = currentMode == AgentExecutionMode.ATTACH,
                                         onClick = { viewModel.setAgentExecutionMode(AgentExecutionMode.ATTACH) },
-                                        label = { Text("Attach (-n)", fontSize = 10.sp, maxLines = 1) },
+                                        label = { Text(stringResource(R.string.il2cpp_mode_attach), fontSize = 10.sp, maxLines = 1) },
                                         modifier = Modifier.weight(1f)
                                     )
                                 }
@@ -1398,7 +1400,7 @@ fun Il2CppScreen(
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Icon(Icons.Default.Timer, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                                         Spacer(modifier = Modifier.width(6.dp))
-                                        Text("Injektions-Verzögerung:", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                        Text(stringResource(R.string.il2cpp_inject_delay_de), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                     }
                                     Text(
                                         text = if (currentDelay == 0) "Sofort (0s)" else "${currentDelay}s",
@@ -1565,7 +1567,7 @@ fun Il2CppScreen(
 
                     // GOAL INSTRUCTION INPUT
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text("Reverse Engineering Goal:", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.il2cpp_re_goal), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                         LazyRow(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -1576,7 +1578,7 @@ fun Il2CppScreen(
                                     contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp),
                                     shape = RoundedCornerShape(10.dp)
                                 ) {
-                                    Text("Anti-Cheat Bypass", fontSize = 11.sp)
+                                    Text(stringResource(R.string.il2cpp_preset_anticheat), fontSize = 11.sp)
                                 }
                             }
                             item {
@@ -1585,7 +1587,7 @@ fun Il2CppScreen(
                                     contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp),
                                     shape = RoundedCornerShape(10.dp)
                                 ) {
-                                    Text("God Mode & HP", fontSize = 11.sp)
+                                    Text(stringResource(R.string.il2cpp_preset_godmode), fontSize = 11.sp)
                                 }
                             }
                             item {
@@ -1594,7 +1596,7 @@ fun Il2CppScreen(
                                     contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp),
                                     shape = RoundedCornerShape(10.dp)
                                 ) {
-                                    Text("Unlimited Money", fontSize = 11.sp)
+                                    Text(stringResource(R.string.il2cpp_preset_money), fontSize = 11.sp)
                                 }
                             }
                         }
@@ -1602,7 +1604,7 @@ fun Il2CppScreen(
                         OutlinedTextField(
                             value = globalInstruction,
                             onValueChange = { globalInstruction = it },
-                            placeholder = { Text("Specify reverse engineering goal (e.g. Spoof return value of IsBanned and lock playerHealth at 9999)...") },
+                            placeholder = { Text(stringResource(R.string.il2cpp_re_goal_hint)) },
                             modifier = Modifier.fillMaxWidth().height(90.dp),
                             shape = RoundedCornerShape(12.dp),
                             maxLines = 3,
@@ -1613,7 +1615,7 @@ fun Il2CppScreen(
                     // LIVE GENERATOR PREVIEW USING SCROLLABLE CODE PREVIEW
                     if (viewModel.isGeneratingAiScript.value || (isAgentRunning && !viewModel.aiGeneratedScript.value.isNullOrBlank())) {
                         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                            Text("Live Token Generator Stream:", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                            Text(stringResource(R.string.il2cpp_token_stream), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                             ScrollableCodePreview(
                                 code = viewModel.aiGeneratedScript.value ?: "// Generating...",
                                 maxHeight = 160.dp
@@ -1631,25 +1633,25 @@ fun Il2CppScreen(
                             Tab(
                                 selected = agentTabSelection == 0,
                                 onClick = { agentTabSelection = 0 },
-                                text = { Text("Terminal Log", fontSize = 11.sp, fontWeight = FontWeight.Bold) },
+                                text = { Text(stringResource(R.string.il2cpp_tab_terminal), fontSize = 11.sp, fontWeight = FontWeight.Bold) },
                                 icon = { Icon(Icons.Default.Terminal, null, modifier = Modifier.size(14.dp)) }
                             )
                             Tab(
                                 selected = agentTabSelection == 1,
                                 onClick = { agentTabSelection = 1 },
-                                text = { Text("Frida Console", fontSize = 11.sp, fontWeight = FontWeight.Bold) },
+                                text = { Text(stringResource(R.string.il2cpp_tab_frida), fontSize = 11.sp, fontWeight = FontWeight.Bold) },
                                 icon = { Icon(Icons.Default.BugReport, null, modifier = Modifier.size(14.dp)) }
                             )
                             Tab(
                                 selected = agentTabSelection == 2,
                                 onClick = { agentTabSelection = 2 },
-                                text = { Text("sql.db AST", fontSize = 11.sp, fontWeight = FontWeight.Bold) },
+                                text = { Text(stringResource(R.string.il2cpp_tab_ast), fontSize = 11.sp, fontWeight = FontWeight.Bold) },
                                 icon = { Icon(Icons.Default.Storage, null, modifier = Modifier.size(14.dp)) }
                             )
                             Tab(
                                 selected = agentTabSelection == 3,
                                 onClick = { agentTabSelection = 3 },
-                                text = { Text("Script Diff", fontSize = 11.sp, fontWeight = FontWeight.Bold) },
+                                text = { Text(stringResource(R.string.il2cpp_tab_diff), fontSize = 11.sp, fontWeight = FontWeight.Bold) },
                                 icon = { Icon(Icons.Default.Difference, null, modifier = Modifier.size(14.dp)) }
                             )
                         }
@@ -1832,7 +1834,7 @@ fun Il2CppScreen(
                                     ) {
                                         Icon(Icons.Default.Check, null, modifier = Modifier.size(16.dp))
                                         Spacer(modifier = Modifier.width(4.dp))
-                                        Text("JA! Ziel erreicht", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        Text(stringResource(R.string.il2cpp_goal_yes_de), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                     }
 
                                     Button(
@@ -1843,7 +1845,7 @@ fun Il2CppScreen(
                                     ) {
                                         Icon(Icons.Default.Close, null, modifier = Modifier.size(16.dp))
                                         Spacer(modifier = Modifier.width(4.dp))
-                                        Text("Nein, nachjustieren", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        Text(stringResource(R.string.il2cpp_goal_no_de), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                     }
                                 }
 
@@ -1856,7 +1858,7 @@ fun Il2CppScreen(
                                             value = refinedPromptInput,
                                             onValueChange = { refinedPromptInput = it },
                                             modifier = Modifier.fillMaxWidth(),
-                                            placeholder = { Text("Optional: Hinweis zur Nachjustierung (z.B. 'Versuche get_Coins oder AddMoney')", fontSize = 11.sp) },
+                                            placeholder = { Text(stringResource(R.string.il2cpp_refine_hint_de), fontSize = 11.sp) },
                                             maxLines = 2,
                                             textStyle = LocalTextStyle.current.copy(fontSize = 12.sp)
                                         )
@@ -1951,7 +1953,7 @@ fun Il2CppScreen(
                                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0288D1)),
                                     contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
                                 ) {
-                                    Text("+15s Timer", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                    Text(stringResource(R.string.il2cpp_timer15), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
                         }
@@ -1971,7 +1973,7 @@ fun Il2CppScreen(
                             ) {
                                 Icon(Icons.Default.Stop, null, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text("Abort ReShift AI Agent")
+                                Text(stringResource(R.string.il2cpp_abort_ai))
                             }
                         } else {
                             Button(
@@ -2100,7 +2102,7 @@ private fun Il2CppClassCard(
                         },
                         modifier = Modifier.size(32.dp)
                     ) {
-                        Icon(Icons.Default.Code, contentDescription = "Copy C# Stub", modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                        Icon(Icons.Default.Code, contentDescription = stringResource(R.string.il2cpp_copy_cs_stub), modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                     }
 
                     IconButton(
@@ -2109,7 +2111,7 @@ private fun Il2CppClassCard(
                         },
                         modifier = Modifier.size(32.dp)
                     ) {
-                        Icon(Icons.Default.Build, contentDescription = "Hook All Methods", modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.secondary)
+                        Icon(Icons.Default.Build, contentDescription = stringResource(R.string.il2cpp_hook_all), modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.secondary)
                     }
 
                     IconButton(
@@ -2223,7 +2225,7 @@ private fun Il2CppClassCard(
                                 OutlinedTextField(
                                     value = itemSearchQuery,
                                     onValueChange = { itemSearchQuery = it },
-                                    placeholder = { Text("Filter methods...", fontSize = 11.sp) },
+                                    placeholder = { Text(stringResource(R.string.il2cpp_filter_methods), fontSize = 11.sp) },
                                     modifier = Modifier.weight(1f),
                                     shape = RoundedCornerShape(8.dp),
                                     leadingIcon = { Icon(Icons.Default.Search, null, modifier = Modifier.size(14.dp)) },
@@ -2233,7 +2235,7 @@ private fun Il2CppClassCard(
                                 FilterChip(
                                     selected = methodFilterOption == 1,
                                     onClick = { methodFilterOption = if (methodFilterOption == 1) 0 else 1 },
-                                    label = { Text("Offset", fontSize = 10.sp) },
+                                    label = { Text(stringResource(R.string.il2cpp_offset), fontSize = 10.sp) },
                                     shape = RoundedCornerShape(6.dp)
                                 )
                             }
@@ -2346,7 +2348,7 @@ private fun Il2CppClassCard(
                                                     onClick = { onAiAssistant(method) },
                                                     modifier = Modifier.size(28.dp)
                                                 ) {
-                                                    Icon(Icons.Default.AutoAwesome, contentDescription = "AI Hook", modifier = Modifier.size(15.dp), tint = MaterialTheme.colorScheme.primary)
+                                                    Icon(Icons.Default.AutoAwesome, contentDescription = stringResource(R.string.il2cpp_ai_hook), modifier = Modifier.size(15.dp), tint = MaterialTheme.colorScheme.primary)
                                                 }
 
                                                 IconButton(
@@ -2358,7 +2360,7 @@ private fun Il2CppClassCard(
                                                     },
                                                     modifier = Modifier.size(28.dp)
                                                 ) {
-                                                    Icon(Icons.Default.ContentCopy, contentDescription = "Copy Offset", modifier = Modifier.size(14.dp))
+                                                    Icon(Icons.Default.ContentCopy, contentDescription = stringResource(R.string.il2cpp_copy_offset), modifier = Modifier.size(14.dp))
                                                 }
 
                                                 Button(
@@ -2367,7 +2369,7 @@ private fun Il2CppClassCard(
                                                     shape = RoundedCornerShape(6.dp),
                                                     modifier = Modifier.height(26.dp)
                                                 ) {
-                                                    Text("HOOK", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                                    Text(stringResource(R.string.il2cpp_hook), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                                                 }
                                             }
                                         }
@@ -2383,7 +2385,7 @@ private fun Il2CppClassCard(
                                 OutlinedTextField(
                                     value = itemSearchQuery,
                                     onValueChange = { itemSearchQuery = it },
-                                    placeholder = { Text("Filter fields...", fontSize = 11.sp) },
+                                    placeholder = { Text(stringResource(R.string.il2cpp_filter_fields), fontSize = 11.sp) },
                                     modifier = Modifier.fillMaxWidth(),
                                     shape = RoundedCornerShape(8.dp),
                                     leadingIcon = { Icon(Icons.Default.Search, null, modifier = Modifier.size(14.dp)) },
@@ -2401,7 +2403,7 @@ private fun Il2CppClassCard(
                                 }
 
                                 if (filteredFields.isEmpty()) {
-                                    Text("No fields matched filter.", fontSize = 11.sp, color = MaterialTheme.colorScheme.outline)
+                                    Text(stringResource(R.string.il2cpp_no_fields), fontSize = 11.sp, color = MaterialTheme.colorScheme.outline)
                                 } else {
                                     filteredFields.forEach { field ->
                                         Row(
@@ -2445,7 +2447,7 @@ private fun Il2CppClassCard(
                         // TAB 2: PROPERTIES
                         2 -> {
                             if (klass.properties.isEmpty()) {
-                                Text("No properties declared in this class.", fontSize = 11.sp, color = MaterialTheme.colorScheme.outline)
+                                Text(stringResource(R.string.il2cpp_no_props), fontSize = 11.sp, color = MaterialTheme.colorScheme.outline)
                             } else {
                                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     klass.properties.forEach { prop ->
@@ -2561,7 +2563,7 @@ private fun ScrollableCodePreview(
                     },
                     modifier = Modifier.size(26.dp)
                 ) {
-                    Icon(Icons.Default.ContentCopy, contentDescription = "Copy", tint = Color(0xFFCCCCCC), modifier = Modifier.size(14.dp))
+                    Icon(Icons.Default.ContentCopy, contentDescription = stringResource(R.string.common_copy), tint = Color(0xFFCCCCCC), modifier = Modifier.size(14.dp))
                 }
 
                 if (onSave != null) {
@@ -2569,7 +2571,7 @@ private fun ScrollableCodePreview(
                         onClick = onSave,
                         modifier = Modifier.size(26.dp)
                     ) {
-                        Icon(Icons.Default.Save, contentDescription = "Save", tint = Color(0xFFCCCCCC), modifier = Modifier.size(14.dp))
+                        Icon(Icons.Default.Save, contentDescription = stringResource(R.string.common_save), tint = Color(0xFFCCCCCC), modifier = Modifier.size(14.dp))
                     }
                 }
 
@@ -2578,7 +2580,7 @@ private fun ScrollableCodePreview(
                         onClick = onShare,
                         modifier = Modifier.size(26.dp)
                     ) {
-                        Icon(Icons.Default.Share, contentDescription = "Share", tint = Color(0xFFCCCCCC), modifier = Modifier.size(14.dp))
+                        Icon(Icons.Default.Share, contentDescription = stringResource(R.string.common_share), tint = Color(0xFFCCCCCC), modifier = Modifier.size(14.dp))
                     }
                 }
             }
@@ -2706,13 +2708,13 @@ private fun AppPickerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select Target Application", fontWeight = FontWeight.Bold) },
+        title = { Text(stringResource(R.string.il2cpp_select_target_app2), fontWeight = FontWeight.Bold) },
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    placeholder = { Text("Search app name or package...") },
+                    placeholder = { Text(stringResource(R.string.il2cpp_search_app)) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp),
                     leadingIcon = { Icon(Icons.Default.Search, null) },
@@ -2761,7 +2763,7 @@ private fun AppPickerDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.common_cancel))
             }
         }
     )

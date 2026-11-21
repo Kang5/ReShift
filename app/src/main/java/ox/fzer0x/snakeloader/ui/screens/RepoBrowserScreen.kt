@@ -19,8 +19,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import ox.fzer0x.snakeloader.*
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.ReShiftCard
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
 import ox.fzer0x.snakeloader.ui.components.ReShiftButtonShape
@@ -158,7 +160,7 @@ fun RepoBrowserScreen(
                 actions = {
                     if (selectedRepository == null) {
                         IconButton(onClick = { showAddRepoDialog = true }) {
-                            Icon(Icons.Default.Add, contentDescription = "Add Repo")
+                            Icon(Icons.Default.Add, contentDescription = stringResource(R.string.repo_add))
                         }
                     } else {
                         IconButton(onClick = { loadPath(selectedRepository!!, currentPath) }) {
@@ -211,7 +213,7 @@ fun RepoBrowserScreen(
         } else {
             if (scripts.isEmpty()) {
                 Box(modifier = Modifier.padding(padding).fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No scripts found.", color = MaterialTheme.colorScheme.outline)
+                    Text(stringResource(R.string.repo_no_scripts), color = MaterialTheme.colorScheme.outline)
                 }
             } else {
                 LazyColumn(
@@ -275,12 +277,12 @@ fun RepoBrowserScreen(
                 ) {
                     Icon(Icons.Default.Download, null)
                     Spacer(Modifier.width(8.dp))
-                    Text("Download", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.common_download), fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { scriptToPreview = null }, shape = ReShiftButtonShape) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.common_cancel))
                 }
             },
             shape = ReShiftDialogShape
@@ -294,12 +296,12 @@ fun RepoBrowserScreen(
 
         AlertDialog(
             onDismissRequest = { showAddRepoDialog = false },
-            title = { Text("Add Custom Repository", fontWeight = FontWeight.Bold) },
+            title = { Text(stringResource(R.string.repo_add_custom), fontWeight = FontWeight.Bold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    OutlinedTextField(value = owner, onValueChange = { owner = it }, label = { Text("Owner (e.g. frida)") }, singleLine = true, shape = ReShiftButtonShape)
-                    OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Repo Name") }, singleLine = true, shape = ReShiftButtonShape)
-                    OutlinedTextField(value = path, onValueChange = { path = it }, label = { Text("Root Path (optional)") }, singleLine = true, shape = ReShiftButtonShape)
+                    OutlinedTextField(value = owner, onValueChange = { owner = it }, label = { Text(stringResource(R.string.repo_owner_hint)) }, singleLine = true, shape = ReShiftButtonShape)
+                    OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text(stringResource(R.string.repo_name)) }, singleLine = true, shape = ReShiftButtonShape)
+                    OutlinedTextField(value = path, onValueChange = { path = it }, label = { Text(stringResource(R.string.repo_root_path)) }, singleLine = true, shape = ReShiftButtonShape)
                 }
             },
             confirmButton = {

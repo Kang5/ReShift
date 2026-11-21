@@ -20,11 +20,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import ox.fzer0x.snakeloader.GitHubApiService
 import ox.fzer0x.snakeloader.ModuleMetadata
 import ox.fzer0x.snakeloader.ReShiftModuleFile
 import ox.fzer0x.snakeloader.ScriptManager
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.BadgePill
 import ox.fzer0x.snakeloader.ui.components.ReShiftButtonShape
 import ox.fzer0x.snakeloader.ui.components.ReShiftCard
@@ -183,12 +185,12 @@ fun AssetBrowserScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             ReShiftTopAppBar(
-                title = "ReShift Modules",
-                subtitle = "fzer0x/ReShift GitHub Repository",
+                title = stringResource(R.string.ab_title),
+                subtitle = stringResource(R.string.ab_repo),
                 onBack = onBack,
                 actions = {
                     IconButton(onClick = { loadModules(forceRefresh = true) }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.common_refresh))
                     }
                 }
             )
@@ -201,7 +203,7 @@ fun AssetBrowserScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                placeholder = { Text("Search modules...") },
+                placeholder = { Text(stringResource(R.string.ab_search_hint)) },
                 leadingIcon = { Icon(Icons.Default.Search, null) },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
@@ -259,7 +261,7 @@ fun AssetBrowserScreen(
                         ) {
                             Icon(Icons.Default.Refresh, null)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Retry")
+                            Text(stringResource(R.string.common_retry))
                         }
                     }
                 }
@@ -443,7 +445,7 @@ fun AssetBrowserScreen(
                         ) {
                             CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
                             Spacer(modifier = Modifier.width(12.dp))
-                            Text("Loading metadata from GitHub...", style = MaterialTheme.typography.bodyMedium)
+                            Text(stringResource(R.string.ab_loading), style = MaterialTheme.typography.bodyMedium)
                         }
                     } else {
                         val desc = previewMetadata?.description ?: "No description available."
@@ -486,12 +488,12 @@ fun AssetBrowserScreen(
                 ) {
                     Icon(Icons.Default.Download, null)
                     Spacer(Modifier.width(8.dp))
-                    Text("Import Module", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.ab_import), fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { moduleToPreview = null }, shape = ReShiftButtonShape) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.common_cancel))
                 }
             },
             shape = ReShiftDialogShape

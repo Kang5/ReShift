@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -45,6 +46,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ox.fzer0x.snakeloader.FridaManager
 import ox.fzer0x.snakeloader.LogManager
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.ReShiftCard
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
 import ox.fzer0x.snakeloader.ui.components.ReShiftChipShape
@@ -68,9 +70,9 @@ fun LogsScreen(
     val scope = rememberCoroutineScope()
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf(
-        "Scripts" to Icons.Default.Description,
-        "Logcat" to Icons.AutoMirrored.Filled.List,
-        "Frida CLI" to Icons.Default.Terminal
+        R.string.overlay_title_scripts to Icons.Default.Description,
+        R.string.overlay_title_logcat to Icons.AutoMirrored.Filled.List,
+        R.string.overlay_title_frida to Icons.Default.Terminal
     )
 
     var searchQuery by remember { mutableStateOf("") }
@@ -86,6 +88,7 @@ fun LogsScreen(
 
     val timeFormat = remember { SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault()) }
     var showMenu by remember { mutableStateOf(false) }
+    val currentTabTitle = stringResource(tabs[selectedTab].first)
 
     LaunchedEffect(Unit) {
         LogcatReader.start()
@@ -137,7 +140,7 @@ fun LogsScreen(
                                 value = searchQuery,
                                 onValueChange = { searchQuery = it },
                                 modifier = Modifier.fillMaxWidth().padding(end = 16.dp),
-                                placeholder = { Text("Filter logs...") },
+                                placeholder = { Text(stringResource(R.string.logs_search_placeholder)) },
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.Transparent,
                                     unfocusedContainerColor = Color.Transparent,
@@ -161,43 +164,43 @@ fun LogsScreen(
                     )
                 } else {
                     ReShiftTopAppBar(
-                        title = "System Logs",
+                        title = stringResource(R.string.logs_title),
                         actions = {
                             IconButton(onClick = { isSearchExpanded = true }) {
-                                Icon(Icons.Default.Search, contentDescription = "Search")
+                                Icon(Icons.Default.Search, contentDescription = stringResource(R.string.cd_search))
                             }
                             IconButton(onClick = { autoScrollEnabled = !autoScrollEnabled }) {
                                 Icon(
                                     if (autoScrollEnabled) Icons.Default.VerticalAlignTop else Icons.Default.VerticalAlignBottom,
-                                    contentDescription = "Toggle auto-scroll",
+                                    contentDescription = stringResource(R.string.cd_toggle_autoscroll),
                                     tint = if (autoScrollEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
                                 )
                             }
                             IconButton(onClick = { showMenu = true }) {
-                                Icon(Icons.Default.MoreVert, contentDescription = "Options")
+                                Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_options))
                             }
                             DropdownMenu(
                                 expanded = showMenu,
                                 onDismissRequest = { showMenu = false }
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("Close") },
+                                    text = { Text(stringResource(R.string.action_close)) },
                                     onClick = {
                                         showMenu = false
                                         context.findActivity()?.finishAndRemoveTask()
                                     },
-                                    leadingIcon = { Icon(Icons.Default.Close, contentDescription = "Close ReShift", tint = MaterialTheme.colorScheme.error) }
+                                    leadingIcon = { Icon(Icons.Default.Close, contentDescription = stringResource(R.string.cd_close_app), tint = MaterialTheme.colorScheme.error) }
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Share current view") },
+                                    text = { Text(stringResource(R.string.logs_share_current)) },
                                     onClick = {
                                         showMenu = false
-                                        shareLogs(context, tabs[selectedTab].first, currentLogs, timeFormat)
+                                        shareLogs(context, currentTabTitle, currentLogs, timeFormat)
                                     },
                                     leadingIcon = { Icon(Icons.Default.Share, null) }
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Clear All") },
+                                    text = { Text(stringResource(R.string.logs_clear_all)) },
                                     onClick = {
                                         showMenu = false
                                         when (selectedTab) {
@@ -210,7 +213,7 @@ fun LogsScreen(
                                 )
                                 HorizontalDivider()
                                 DropdownMenuItem(
-                                    text = { Text("Settings") },
+                                    text = { Text(stringResource(R.string.action_settings)) },
                                     onClick = {
                                         showMenu = false
                                         onNavigateToSettings()
@@ -218,7 +221,7 @@ fun LogsScreen(
                                     leadingIcon = { Icon(Icons.Default.Settings, null) }
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Join Community") },
+                                    text = { Text(stringResource(R.string.action_join_community)) },
                                     onClick = {
                                         showMenu = false
                                         try {
@@ -246,7 +249,7 @@ fun LogsScreen(
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Icon(icon, null, modifier = Modifier.size(16.dp))
                                     Spacer(Modifier.width(8.dp))
-                                    Text(title, style = MaterialTheme.typography.labelLarge)
+                                    Text(stringResource(title), style = MaterialTheme.typography.labelLarge)
                                 }
                             }
                         )
@@ -354,18 +357,18 @@ fun EmptyLogsView(padding: PaddingValues, selectedTab: Int, isFiltering: Boolean
             )
             Spacer(Modifier.height(16.dp))
             Text(
-                text = if (isFiltering) "No logs match your filter." else when (selectedTab) {
-                    0 -> "No script logs recorded."
-                    1 -> "No Logcat entries captured."
-                    2 -> "Frida CLI is idle. No output captured."
+                text = if (isFiltering) stringResource(R.string.logs_empty_filtered_title) else when (selectedTab) {
+                    0 -> stringResource(R.string.logs_empty_scripts)
+                    1 -> stringResource(R.string.logs_empty_logcat)
+                    2 -> stringResource(R.string.logs_empty_frida)
                     else -> ""
                 },
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.outline
             )
             Text(
-                text = if (isFiltering) "Try adjusting your search or level filters."
-                       else "Logs will appear here once injection starts.",
+                text = if (isFiltering) stringResource(R.string.logs_empty_filtered_hint)
+                       else stringResource(R.string.logs_empty_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.outline
             )

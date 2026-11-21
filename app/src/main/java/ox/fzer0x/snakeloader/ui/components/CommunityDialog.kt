@@ -17,7 +17,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
+import ox.fzer0x.snakeloader.R
 
 @Composable
 fun CommunityDialog(
@@ -71,7 +73,7 @@ fun CommunityDialog(
                 Spacer(modifier = Modifier.height(12.dp))
                 
                 Text(
-                    text = "Join Telegram for community support, live chat and script sharing!",
+                    text = stringResource(R.string.comm_desc),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -116,7 +118,7 @@ fun CommunityDialog(
                         shape = ReShiftButtonShape,
                         contentPadding = PaddingValues(vertical = 12.dp)
                     ) {
-                        Text("Join Channel", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        Text(stringResource(R.string.comm_join), fontWeight = FontWeight.Bold, fontSize = 15.sp)
                     }
                     
                     TextButton(

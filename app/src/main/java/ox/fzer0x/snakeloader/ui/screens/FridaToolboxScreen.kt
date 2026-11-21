@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.FridaManager
 import ox.fzer0x.snakeloader.ScriptManager
 import ox.fzer0x.snakeloader.ui.components.ReShiftButtonShape
@@ -99,11 +101,11 @@ fun FridaToolboxScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             ReShiftTopAppBar(
-                title = "Frida Toolbox",
+                title = stringResource(R.string.frida_toolbox_title),
                 onBack = onBack,
                 actions = {
                     IconButton(onClick = { refreshSettings() }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.common_refresh))
                     }
                 }
             )
@@ -118,7 +120,7 @@ fun FridaToolboxScreen(
         ) {
             // SECTION 1: FRIDA ENGINE CONTROL
             item {
-                SectionHeader("Frida Engine Control")
+                SectionHeader(stringResource(R.string.frida_engine_control))
                 ReShiftCard {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
@@ -189,7 +191,7 @@ fun FridaToolboxScreen(
                         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 BinaryChoiceChip(
-                                    label = "Auto",
+                                    label = stringResource(R.string.frida_mode_auto),
                                     selected = selectedBinary == "auto",
                                     onClick = {
                                         selectedBinary = "auto"
@@ -199,7 +201,7 @@ fun FridaToolboxScreen(
                                     modifier = Modifier.weight(1f)
                                 )
                                 BinaryChoiceChip(
-                                    label = "Server",
+                                    label = stringResource(R.string.frida_mode_server),
                                     selected = selectedBinary == "server",
                                     onClick = {
                                         selectedBinary = "server"
@@ -209,7 +211,7 @@ fun FridaToolboxScreen(
                                     modifier = Modifier.weight(1f)
                                 )
                                 BinaryChoiceChip(
-                                    label = "Inject",
+                                    label = stringResource(R.string.frida_mode_inject),
                                     selected = selectedBinary == "inject",
                                     onClick = {
                                         selectedBinary = "inject"
@@ -221,7 +223,7 @@ fun FridaToolboxScreen(
                             }
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 BinaryChoiceChip(
-                                    label = "RPC (CLI)",
+                                    label = stringResource(R.string.frida_mode_rpc),
                                     selected = selectedBinary == "cli",
                                     onClick = {
                                         selectedBinary = "cli"
@@ -231,7 +233,7 @@ fun FridaToolboxScreen(
                                     modifier = Modifier.weight(1f)
                                 )
                                 BinaryChoiceChip(
-                                    label = "Zygisk (Gadget)",
+                                    label = stringResource(R.string.frida_mode_gadget),
                                     selected = selectedBinary == "gadget",
                                     onClick = {
                                         selectedBinary = "gadget"
@@ -263,7 +265,7 @@ fun FridaToolboxScreen(
                             ) {
                                 Icon(Icons.Default.PlayArrow, null, modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.width(6.dp))
-                                Text("Start Server", fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.frida_start_server), fontWeight = FontWeight.Bold)
                             }
 
                             OutlinedButton(
@@ -278,7 +280,7 @@ fun FridaToolboxScreen(
                             ) {
                                 Icon(Icons.Default.Stop, null, modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.width(6.dp))
-                                Text("Stop Engine", fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.frida_stop_engine), fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -287,11 +289,11 @@ fun FridaToolboxScreen(
 
             // SECTION 2: SYSTEM ENVIRONMENT & SECURITY
             item {
-                SectionHeader("System Security & Environment")
+                SectionHeader(stringResource(R.string.frida_section_security))
                 ReShiftCard {
                     Column(modifier = Modifier.padding(vertical = 4.dp)) {
                         SecuritySettingRow(
-                            title = "SELinux Mode",
+                            title = stringResource(R.string.frida_selinux_mode),
                             subtitle = if (isSelinuxPermissive) "Permissive (Kernel security hooks bypassed)" else "Enforcing (Standard system security active)",
                             value = if (isSelinuxPermissive) "Permissive" else "Enforcing",
                             color = if (isSelinuxPermissive) WarningOrange else SuccessGreen,
@@ -309,7 +311,7 @@ fun FridaToolboxScreen(
                         HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
 
                         SecuritySettingRow(
-                            title = "Ptrace Scope",
+                            title = stringResource(R.string.frida_ptrace_scope),
                             subtitle = if (isPtraceScopeDisabled) "Disabled (Process memory attachment permitted)" else "Restricted (YAMA ptrace restriction enabled)",
                             value = if (isPtraceScopeDisabled) "Disabled" else "Restricted",
                             color = if (isPtraceScopeDisabled) SuccessGreen else WarningOrange,
@@ -330,7 +332,7 @@ fun FridaToolboxScreen(
                         HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
 
                         SecuritySettingRow(
-                            title = "Stealth Engine Mode",
+                            title = stringResource(R.string.frida_stealth_mode),
                             subtitle = if (isStealthModeEnabled) "Active (Anti-detection & binary cloak active)" else "Default (Standard Frida binary signature)",
                             value = if (isStealthModeEnabled) "Active" else "Default",
                             color = if (isStealthModeEnabled) SuccessGreen else MaterialTheme.colorScheme.outline,
@@ -343,20 +345,20 @@ fun FridaToolboxScreen(
 
             // SECTION 3: CORE ANALYSIS & INSTRUMENTATION TOOLS
             item {
-                SectionHeader("Instrumentation & Analysis Tools")
+                SectionHeader(stringResource(R.string.frida_section_tools))
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         GridActionCard(
-                            title = "Il2Cpp Dumper",
-                            subtitle = "Unity Metadata & Classes",
+                            title = stringResource(R.string.frida_il2cpp_dumper),
+                            subtitle = stringResource(R.string.frida_il2cpp_desc),
                             icon = Icons.Default.Inventory2,
                             color = SuccessGreen,
                             onClick = { onNavigateToIl2CppInspector?.invoke(DumperEngine.IL2CPP) },
                             modifier = Modifier.weight(1f)
                         )
                         GridActionCard(
-                            title = "UE4 Dumper",
-                            subtitle = "Unreal Engine 4/5 SDK",
+                            title = stringResource(R.string.frida_ue4_dumper),
+                            subtitle = stringResource(R.string.frida_ue4_desc),
                             icon = Icons.Default.ViewInAr,
                             color = WarningOrange,
                             onClick = { onNavigateToIl2CppInspector?.invoke(DumperEngine.UE4) },
@@ -365,16 +367,16 @@ fun FridaToolboxScreen(
                     }
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         GridActionCard(
-                            title = "Memory Inspector",
-                            subtitle = "AOB Scanner & Code Patcher",
+                            title = stringResource(R.string.frida_memory_inspector),
+                            subtitle = stringResource(R.string.frida_memory_desc),
                             icon = Icons.Default.Memory,
                             color = MaterialTheme.colorScheme.secondary,
                             onClick = { onNavigateToMemoryInspector?.invoke() },
                             modifier = Modifier.weight(1f)
                         )
                         GridActionCard(
-                            title = "Code Flow Stalker",
-                            subtitle = "Instruction Execution Tracer",
+                            title = stringResource(R.string.frida_stalker),
+                            subtitle = stringResource(R.string.frida_stalker_desc),
                             icon = Icons.Default.Timeline,
                             color = SuccessGreen,
                             onClick = { onNavigateToStalker?.invoke() },
@@ -383,16 +385,16 @@ fun FridaToolboxScreen(
                     }
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         GridActionCard(
-                            title = "DEX & ELF Inspector",
-                            subtitle = "Ghidra / Radare2 Decompiler",
+                            title = stringResource(R.string.frida_dex_elf),
+                            subtitle = stringResource(R.string.frida_dex_elf_desc),
                             icon = Icons.Default.Code,
                             color = MaterialTheme.colorScheme.tertiary,
                             onClick = { onNavigateToDexDecompiler?.invoke() },
                             modifier = Modifier.weight(1f)
                         )
                         GridActionCard(
-                            title = "Hardware Spoofer",
-                            subtitle = "Fingerprint Anonymizer",
+                            title = stringResource(R.string.frida_spoofer),
+                            subtitle = stringResource(R.string.frida_spoofer_desc),
                             icon = Icons.Default.PhoneAndroid,
                             color = MaterialTheme.colorScheme.primary,
                             onClick = { onNavigateToDeviceSpoofer?.invoke() },
@@ -401,8 +403,8 @@ fun FridaToolboxScreen(
                     }
                     Row(modifier = Modifier.fillMaxWidth()) {
                         GridActionCard(
-                            title = "Advanced Config",
-                            subtitle = "Runtime Options, Environment & Frida Toolchain",
+                            title = stringResource(R.string.frida_advanced_config),
+                            subtitle = stringResource(R.string.frida_advanced_desc),
                             icon = Icons.Default.SettingsSuggest,
                             color = MaterialTheme.colorScheme.secondary,
                             onClick = { onNavigateToAdvancedFrida?.invoke("com.example.app") },
@@ -414,10 +416,10 @@ fun FridaToolboxScreen(
 
             // SECTION 4: POWER UTILITIES & SYSTEM ACTIONS
             item {
-                SectionHeader("Power Utilities & Actions")
+                SectionHeader(stringResource(R.string.frida_section_power))
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     ToolboxActionRow(
-                        title = "Process & Module Manager",
+                        title = stringResource(R.string.frida_process_manager),
                         description = "Inspect running apps & loaded .so libraries",
                         icon = Icons.AutoMirrored.Filled.List,
                         onClick = {
@@ -426,13 +428,13 @@ fun FridaToolboxScreen(
                         }
                     )
                     ToolboxActionRow(
-                        title = "Interactive Root Shell",
+                        title = stringResource(R.string.frida_root_shell),
                         description = "Execute su terminal commands with live output",
                         icon = Icons.Outlined.Terminal,
                         onClick = { showShellDialog = true }
                     )
                     ToolboxActionRow(
-                        title = "Flush Logcat Logs",
+                        title = stringResource(R.string.frida_flush_logcat),
                         description = "Clear Android logcat buffers",
                         icon = Icons.Default.DeleteSweep,
                         onClick = {
@@ -465,7 +467,7 @@ fun FridaToolboxScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.AutoMirrored.Filled.List, null, tint = MaterialTheme.colorScheme.primary)
                         Spacer(Modifier.width(10.dp))
-                        Text("Running Processes", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.frida_running_processes), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                         Spacer(Modifier.weight(1f))
                         if (processViewModel.isLoading) {
                             CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
@@ -481,7 +483,7 @@ fun FridaToolboxScreen(
                         OutlinedTextField(
                             value = processSearchQuery,
                             onValueChange = { processSearchQuery = it },
-                            placeholder = { Text("Search process or PID...") },
+                            placeholder = { Text(stringResource(R.string.frida_search_process_hint)) },
                             leadingIcon = { Icon(Icons.Default.Search, null, modifier = Modifier.size(18.dp)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
@@ -491,7 +493,7 @@ fun FridaToolboxScreen(
                         Box(modifier = Modifier.heightIn(max = 380.dp)) {
                             if (filteredProcesses.isEmpty()) {
                                 Box(modifier = Modifier.fillMaxWidth().height(100.dp), contentAlignment = Alignment.Center) {
-                                    Text("No matching processes found", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
+                                    Text(stringResource(R.string.frida_no_process), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
                                 }
                             } else {
                                 LazyColumn(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -525,7 +527,7 @@ fun FridaToolboxScreen(
                     }
                 },
                 confirmButton = {
-                    TextButton(onClick = { showProcessDialog = false }, shape = ReShiftButtonShape) { Text("Close", fontWeight = FontWeight.Bold) }
+                    TextButton(onClick = { showProcessDialog = false }, shape = ReShiftButtonShape) { Text(stringResource(R.string.common_close), fontWeight = FontWeight.Bold) }
                 },
                 shape = ReShiftDialogShape
             )
@@ -546,7 +548,7 @@ fun FridaToolboxScreen(
                 onDismissRequest = { showModulesDialog = false },
                 title = {
                     Column {
-                        Text("Loaded Modules", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.frida_loaded_modules), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                         Text(selectedProcessName ?: "PID $selectedPidForModules", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
                     }
                 },
@@ -555,7 +557,7 @@ fun FridaToolboxScreen(
                         OutlinedTextField(
                             value = moduleSearchQuery,
                             onValueChange = { moduleSearchQuery = it },
-                            placeholder = { Text("Filter .so libraries...") },
+                            placeholder = { Text(stringResource(R.string.frida_filter_so_hint)) },
                             leadingIcon = { Icon(Icons.Default.Search, null, modifier = Modifier.size(18.dp)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
@@ -605,7 +607,7 @@ fun FridaToolboxScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Outlined.Terminal, null, tint = MaterialTheme.colorScheme.primary)
                         Spacer(Modifier.width(10.dp))
-                        Text("Root Terminal Console", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.frida_root_terminal), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     }
                 },
                 text = {
@@ -626,7 +628,7 @@ fun FridaToolboxScreen(
                         OutlinedTextField(
                             value = command,
                             onValueChange = { command = it },
-                            placeholder = { Text("Enter root command...") },
+                            placeholder = { Text(stringResource(R.string.frida_root_cmd_hint)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             shape = ReShiftButtonShape,
@@ -677,7 +679,7 @@ fun FridaToolboxScreen(
                     }, shape = ReShiftButtonShape) { Text("Close", fontWeight = FontWeight.Bold) }
                 },
                 dismissButton = {
-                    TextButton(onClick = { shellViewModel.clearOutput() }, shape = ReShiftButtonShape) { Text("Clear Output") }
+                    TextButton(onClick = { shellViewModel.clearOutput() }, shape = ReShiftButtonShape) { Text(stringResource(R.string.frida_clear_output)) }
                 },
                 shape = ReShiftDialogShape
             )
@@ -915,7 +917,7 @@ fun PowerControlCard(fridaManager: FridaManager) {
                 ) {
                     Icon(Icons.Default.RestartAlt, null, modifier = Modifier.size(14.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Reboot", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.power_reboot), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
                 OutlinedButton(
                     onClick = { fridaManager.executeRootCommand("reboot bootloader") },
@@ -923,7 +925,7 @@ fun PowerControlCard(fridaManager: FridaManager) {
                     shape = ReShiftChipShape,
                     contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
                 ) {
-                    Text("Bootloader", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.power_bootloader), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
                 OutlinedButton(
                     onClick = { fridaManager.executeRootCommand("reboot recovery") },
@@ -931,7 +933,7 @@ fun PowerControlCard(fridaManager: FridaManager) {
                     shape = ReShiftChipShape,
                     contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
                 ) {
-                    Text("Recovery", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.power_recovery), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -1040,7 +1042,7 @@ fun FridaToolboxPreview() {
                         Column(modifier = Modifier.padding(vertical = 4.dp)) {
                             SecuritySettingRow(
                                 title = "SELinux Mode",
-                                subtitle = "Permissive (Kernel security hooks bypassed)",
+                                subtitle = stringResource(R.string.frida_selinux_permissive),
                                 value = "Permissive",
                                 color = WarningOrange,
                                 icon = Icons.Default.LockOpen,
@@ -1049,7 +1051,7 @@ fun FridaToolboxPreview() {
                             HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                             SecuritySettingRow(
                                 title = "Ptrace Scope",
-                                subtitle = "Disabled (Process memory attachment permitted)",
+                                subtitle = stringResource(R.string.frida_ptrace_disabled),
                                 value = "Disabled",
                                 color = SuccessGreen,
                                 icon = Icons.Default.Visibility,
@@ -1058,7 +1060,7 @@ fun FridaToolboxPreview() {
                             HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                             SecuritySettingRow(
                                 title = "Stealth Engine Mode",
-                                subtitle = "Default (Standard Frida binary signature)",
+                                subtitle = stringResource(R.string.frida_stealth_default),
                                 value = "Default",
                                 color = MaterialTheme.colorScheme.outline,
                                 icon = Icons.Default.Visibility,

@@ -14,9 +14,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import ox.fzer0x.snakeloader.FridaBinaryDownloader
 import ox.fzer0x.snakeloader.FridaManager
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.theme.SuccessGreen
 import ox.fzer0x.snakeloader.ui.theme.WarningOrange
 
@@ -165,14 +167,14 @@ fun FridaBinaryManagerCard(
                     Spacer(Modifier.width(10.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Frida Binary Manager",
+                            text = stringResource(R.string.fb_title),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
-                            text = "On-Demand Releases & Engine Control",
+                            text = stringResource(R.string.fb_subtitle),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1,

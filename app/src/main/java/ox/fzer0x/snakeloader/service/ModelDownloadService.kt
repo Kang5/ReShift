@@ -60,8 +60,8 @@ class ModelDownloadService : Service() {
             val fileName = intent.getStringExtra(EXTRA_FILENAME) ?: "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf"
 
             val initialNotification = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Downloading Local LLM GGUF")
-                .setContentText("Downloading $fileName...")
+                .setContentTitle(getString(ox.fzer0x.snakeloader.R.string.dl_gguf_start_title))
+                .setContentText(getString(ox.fzer0x.snakeloader.R.string.dl_gguf_start_text, fileName))
                 .setSmallIcon(R.drawable.stat_sys_download)
                 .setOngoing(true)
                 .setProgress(100, 0, true)
@@ -78,8 +78,8 @@ class ModelDownloadService : Service() {
             val modelName = intent.getStringExtra(EXTRA_MODEL_NAME) ?: "richardyoung/qwen2.5-7b-instruct-abliterated:latest"
 
             val initialNotification = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Downloading Ollama Model")
-                .setContentText("Initializing pull for $modelName...")
+                .setContentTitle(getString(ox.fzer0x.snakeloader.R.string.dl_ollama_start_title))
+                .setContentText(getString(ox.fzer0x.snakeloader.R.string.dl_ollama_start_text, modelName))
                 .setSmallIcon(R.drawable.stat_sys_download)
                 .setOngoing(true)
                 .setProgress(100, 0, true)
@@ -104,7 +104,7 @@ class ModelDownloadService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "Model Download Service",
+                getString(ox.fzer0x.snakeloader.R.string.dl_channel_name),
                 NotificationManager.IMPORTANCE_LOW
             )
             val manager = getSystemService(NotificationManager::class.java)
@@ -115,7 +115,7 @@ class ModelDownloadService : Service() {
     private suspend fun downloadDirectGguf(downloadUrl: String, fileName: String) = withContext(Dispatchers.IO) {
         val notificationManager = getSystemService(NotificationManager::class.java)
         val notifBuilder = NotificationCompat.Builder(this@ModelDownloadService, CHANNEL_ID)
-            .setContentTitle("Downloading GGUF Model")
+            .setContentTitle(getString(ox.fzer0x.snakeloader.R.string.dl_gguf_title))
             .setSmallIcon(R.drawable.stat_sys_download)
             .setOngoing(true)
 
@@ -154,7 +154,7 @@ class ModelDownloadService : Service() {
                 }
 
                 if (responseCode !in 200..299) {
-                    updateFinishedNotification(notificationManager, notifBuilder, "HTTP Error $responseCode", success = false)
+                    updateFinishedNotification(notificationManager, notifBuilder, getString(ox.fzer0x.snakeloader.R.string.dl_http_error, responseCode), success = false)
                     return@withContext
                 }
 
@@ -162,7 +162,7 @@ class ModelDownloadService : Service() {
             }
 
             val nonNullConn = connection ?: run {
-                updateFinishedNotification(notificationManager, notifBuilder, "Connection failed", success = false)
+                updateFinishedNotification(notificationManager, notifBuilder, getString(ox.fzer0x.snakeloader.R.string.dl_connection_failed), success = false)
                 return@withContext
             }
 
@@ -186,10 +186,10 @@ class ModelDownloadService : Service() {
                     if (fileLength > 0) {
                         val totalMb = fileLength / (1024 * 1024)
                         val percent = ((totalRead.toDouble() / fileLength.toDouble()) * 100).toInt()
-                        notifBuilder.setContentText("$fileName ($downloadedMb / $totalMb MB - $percent%)")
+                        notifBuilder.setContentText(getString(ox.fzer0x.snakeloader.R.string.dl_progress_bytes, fileName, downloadedMb, totalMb, percent))
                         notifBuilder.setProgress(100, percent, false)
                     } else {
-                        notifBuilder.setContentText("$fileName ($downloadedMb MB downloaded)")
+                        notifBuilder.setContentText(getString(ox.fzer0x.snakeloader.R.string.dl_progress_downloaded, fileName, downloadedMb))
                         notifBuilder.setProgress(100, 0, true)
                     }
                     notificationManager?.notify(NOTIFICATION_ID, notifBuilder.build())
@@ -200,11 +200,11 @@ class ModelDownloadService : Service() {
             output.close()
             input.close()
 
-            updateFinishedNotification(notificationManager, notifBuilder, "Saved to ${outputFile.name} (${outputFile.length() / (1024*1024)} MB)", success = true)
+            updateFinishedNotification(notificationManager, notifBuilder, getString(ox.fzer0x.snakeloader.R.string.dl_saved, outputFile.name, outputFile.length() / (1024 * 1024)), success = true)
 
         } catch (e: Exception) {
             Log.e(TAG, "GGUF download failed", e)
-            updateFinishedNotification(notificationManager, notifBuilder, "Download Error: ${e.message}", success = false)
+            updateFinishedNotification(notificationManager, notifBuilder, getString(ox.fzer0x.snakeloader.R.string.dl_error_exception, e.message), success = false)
         } finally {
             connection?.disconnect()
             stopForegroundCompat()
@@ -217,7 +217,7 @@ class ModelDownloadService : Service() {
 
         val notificationManager = getSystemService(NotificationManager::class.java)
         val notifBuilder = NotificationCompat.Builder(this@ModelDownloadService, CHANNEL_ID)
-            .setContentTitle("Downloading $modelName")
+            .setContentTitle(getString(ox.fzer0x.snakeloader.R.string.dl_model_title, modelName))
             .setSmallIcon(R.drawable.stat_sys_download)
             .setOngoing(true)
 
@@ -239,8 +239,8 @@ class ModelDownloadService : Service() {
 
             val responseCode = connection.responseCode
             if (responseCode !in 200..299) {
-                val errText = connection.errorStream?.bufferedReader()?.use { it.readText() } ?: "HTTP $responseCode"
-                updateFinishedNotification(notificationManager, notifBuilder, "Download Failed: $errText", success = false)
+                val errText = connection.errorStream?.bufferedReader()?.use { it.readText() } ?: getString(ox.fzer0x.snakeloader.R.string.dl_http_status, responseCode)
+                updateFinishedNotification(notificationManager, notifBuilder, getString(ox.fzer0x.snakeloader.R.string.dl_failed_detail, errText), success = false)
                 return@withContext
             }
 
@@ -254,11 +254,11 @@ class ModelDownloadService : Service() {
                 try {
                     val progressObj = gson.fromJson(currentLine, OllamaPullProgress::class.java)
                     if (progressObj.error != null) {
-                        updateFinishedNotification(notificationManager, notifBuilder, "Error: ${progressObj.error}", success = false)
+                        updateFinishedNotification(notificationManager, notifBuilder, getString(ox.fzer0x.snakeloader.R.string.dl_pull_error, progressObj.error), success = false)
                         return@withContext
                     }
 
-                    val statusMsg = progressObj.status ?: "Pulling layers..."
+                    val statusMsg = progressObj.status ?: getString(ox.fzer0x.snakeloader.R.string.dl_pulling_layers)
                     val totalBytes = progressObj.total ?: 0L
                     val completedBytes = progressObj.completed ?: 0L
 
@@ -267,7 +267,7 @@ class ModelDownloadService : Service() {
                         val completedMb = completedBytes / (1024 * 1024)
                         val totalMb = totalBytes / (1024 * 1024)
 
-                        notifBuilder.setContentText("$statusMsg ($completedMb / $totalMb MB - $progressPercent%)")
+                        notifBuilder.setContentText(getString(ox.fzer0x.snakeloader.R.string.dl_progress_bytes, statusMsg, completedMb, totalMb, progressPercent))
                         notifBuilder.setProgress(100, progressPercent, false)
                     } else {
                         notifBuilder.setContentText(statusMsg)
@@ -280,11 +280,11 @@ class ModelDownloadService : Service() {
                 }
             }
 
-            updateFinishedNotification(notificationManager, notifBuilder, "Model $modelName downloaded successfully!", success = true)
+            updateFinishedNotification(notificationManager, notifBuilder, getString(ox.fzer0x.snakeloader.R.string.dl_model_success, modelName), success = true)
 
         } catch (e: Exception) {
             Log.e(TAG, "Model download error", e)
-            updateFinishedNotification(notificationManager, notifBuilder, "Download error: ${e.message}", success = false)
+            updateFinishedNotification(notificationManager, notifBuilder, getString(ox.fzer0x.snakeloader.R.string.dl_error_generic, e.message), success = false)
         } finally {
             connection?.disconnect()
             stopForegroundCompat()
@@ -307,7 +307,7 @@ class ModelDownloadService : Service() {
         success: Boolean
     ) {
         val finishedNotif = builder
-            .setContentTitle(if (success) "Download Complete" else "Download Failed")
+            .setContentTitle(getString(if (success) ox.fzer0x.snakeloader.R.string.dl_complete else ox.fzer0x.snakeloader.R.string.dl_failed))
             .setContentText(message)
             .setSmallIcon(if (success) R.drawable.stat_sys_download_done else R.drawable.stat_notify_error)
             .setOngoing(false)

@@ -10,6 +10,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import ox.fzer0x.snakeloader.R
 
 @Composable
 fun LaunchParametersSection(
@@ -35,25 +37,25 @@ fun LaunchParametersSection(
             
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 ParameterToggle(
-                    label = "Exceptor Off",
+                    label = stringResource(R.string.lp_exceptor_off),
                     description = "--exceptor off",
                     checked = useExceptorOff,
                     onCheckedChange = onExceptorOffChange
                 )
                 ParameterToggle(
-                    label = "Runtime V8",
+                    label = stringResource(R.string.lp_runtime_v8),
                     description = "--runtime=v8",
                     checked = useRuntimeV8,
                     onCheckedChange = onRuntimeV8Change
                 )
                 ParameterToggle(
-                    label = "No Pause",
+                    label = stringResource(R.string.lp_no_pause),
                     description = "--no-pause",
                     checked = useNoPause,
                     onCheckedChange = onNoPauseChange
                 )
                 ParameterToggle(
-                    label = "Debug Log",
+                    label = stringResource(R.string.lp_debug_log),
                     description = "--debug",
                     checked = useDebugLog,
                     onCheckedChange = onDebugLogChange

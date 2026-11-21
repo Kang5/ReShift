@@ -38,12 +38,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import ox.fzer0x.snakeloader.spoofer.DeviceProfile
 import ox.fzer0x.snakeloader.spoofer.DeviceSpooferPresets
 import ox.fzer0x.snakeloader.ui.components.*
 import ox.fzer0x.snakeloader.ui.theme.CyanAccent
 import ox.fzer0x.snakeloader.ui.theme.PurpleAccent
 import ox.fzer0x.snakeloader.ui.theme.SuccessGreen
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.viewmodels.DeviceSpooferViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,14 +60,14 @@ fun DeviceSpooferScreen(
     Scaffold(
         topBar = {
             ReShiftTopAppBar(
-                title = "HARDWARE SPOOFER",
-                subtitle = "Dynamic Fingerprint Anonymizer",
+                title = stringResource(R.string.spoof_title),
+                subtitle = stringResource(R.string.spoof_subtitle),
                 onBack = onBack,
                 actions = {
                     IconButton(onClick = { viewModel.randomizeCurrentProfile() }) {
                         Icon(
                             imageVector = Icons.Default.Shuffle,
-                            contentDescription = "Randomize Profile",
+                            contentDescription = stringResource(R.string.spoof_randomize_profile),
                             tint = CyanAccent
                         )
                     }
@@ -126,7 +128,7 @@ fun DeviceSpooferScreen(
             // 2. Preset Quick Selection Chips
             item {
                 Column {
-                    SectionHeader(title = "PRESET PROFILES")
+                    SectionHeader(title = stringResource(R.string.spoof_preset_profiles))
                     Spacer(Modifier.height(8.dp))
                     LazyRow(
                         contentPadding = PaddingValues(vertical = 4.dp),
@@ -216,7 +218,7 @@ fun DeviceSpooferScreen(
                                 ) {
                                     Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(14.dp))
                                     Spacer(Modifier.width(4.dp))
-                                    Text("Randomize", fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                                    Text(stringResource(R.string.spoof_randomize), fontWeight = FontWeight.Bold, fontSize = 11.sp)
                                 }
                             }
 
@@ -245,7 +247,7 @@ fun DeviceSpooferScreen(
 
                 // Box 1: Anonymized Unique Identifiers & Google Ads ID
                 item {
-                    SectionHeader(title = "SPOOFED IDENTIFIERS & AD TRACKING")
+                    SectionHeader(title = stringResource(R.string.spoof_section_ids))
                 }
 
                 item {
@@ -269,43 +271,43 @@ fun DeviceSpooferScreen(
                             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
 
                             SpooferIdentifierBox(
-                                label = "Google Advertising ID (GAID)",
+                                label = stringResource(R.string.spoof_gaid),
                                 value = profile.advertisingId,
                                 context = context
                             )
 
                             SpooferIdentifierBox(
-                                label = "Android ID",
+                                label = stringResource(R.string.spoof_android_id),
                                 value = profile.androidId,
                                 context = context
                             )
 
                             SpooferIdentifierBox(
-                                label = "GSF ID (Google Services Framework)",
+                                label = stringResource(R.string.spoof_gsf_id),
                                 value = profile.gsfId,
                                 context = context
                             )
 
                             SpooferIdentifierBox(
-                                label = "IMEI",
+                                label = stringResource(R.string.spoof_imei),
                                 value = profile.imei,
                                 context = context
                             )
 
                             SpooferIdentifierBox(
-                                label = "DRM Device ID",
+                                label = stringResource(R.string.spoof_drm_id),
                                 value = profile.drmDeviceId,
                                 context = context
                             )
 
                             SpooferIdentifierBox(
-                                label = "Serial Number",
+                                label = stringResource(R.string.spoof_serial),
                                 value = profile.serial,
                                 context = context
                             )
 
                             SpooferIdentifierBox(
-                                label = "MAC Address",
+                                label = stringResource(R.string.spoof_mac),
                                 value = profile.macAddress,
                                 context = context
                             )
@@ -315,7 +317,7 @@ fun DeviceSpooferScreen(
 
                 // Box 2: Hardware Specifications
                 item {
-                    SectionHeader(title = "HARDWARE SPECIFICATIONS")
+                    SectionHeader(title = stringResource(R.string.spoof_section_hw))
                 }
 
                 item {
@@ -338,17 +340,17 @@ fun DeviceSpooferScreen(
 
                             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
 
-                            SpooferFieldRow(label = "Brand / Manufacturer", value = "${profile.brand} / ${profile.manufacturer}")
-                            SpooferFieldRow(label = "Model", value = profile.model)
-                            SpooferFieldRow(label = "Device / Product", value = "${profile.device} (${profile.product})")
-                            SpooferFieldRow(label = "Hardware / Board", value = "${profile.hardware} / ${profile.board}")
+                            SpooferFieldRow(label = stringResource(R.string.spoof_brand), value = "${profile.brand} / ${profile.manufacturer}")
+                            SpooferFieldRow(label = stringResource(R.string.spoof_model), value = profile.model)
+                            SpooferFieldRow(label = stringResource(R.string.spoof_device), value = "${profile.device} (${profile.product})")
+                            SpooferFieldRow(label = stringResource(R.string.spoof_board), value = "${profile.hardware} / ${profile.board}")
                         }
                     }
                 }
 
                 // Box 3: OS Build & Fingerprint
                 item {
-                    SectionHeader(title = "SYSTEM & BUILD FINGERPRINT")
+                    SectionHeader(title = stringResource(R.string.spoof_section_fp))
                 }
 
                 item {
@@ -371,8 +373,8 @@ fun DeviceSpooferScreen(
 
                             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
 
-                            SpooferFieldRow(label = "Android Version", value = "Android ${profile.releaseVersion} (API ${profile.sdkInt})")
-                            SpooferFieldRow(label = "Security Patch", value = profile.securityPatch)
+                            SpooferFieldRow(label = stringResource(R.string.spoof_android_ver), value = "Android ${profile.releaseVersion} (API ${profile.sdkInt})")
+                            SpooferFieldRow(label = stringResource(R.string.spoof_security_patch), value = profile.securityPatch)
 
                             Column(modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) {
                                 Text(
@@ -407,7 +409,7 @@ fun DeviceSpooferScreen(
                                         ) {
                                             Icon(
                                                 Icons.Default.ContentCopy,
-                                                contentDescription = "Copy Fingerprint",
+                                                contentDescription = stringResource(R.string.spoof_copy_fp),
                                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.size(14.dp)
                                             )
@@ -421,7 +423,7 @@ fun DeviceSpooferScreen(
 
                 // Box 4: GPU & Render Engine
                 item {
-                    SectionHeader(title = "GRAPHICS ENGINE")
+                    SectionHeader(title = stringResource(R.string.spoof_section_gfx))
                 }
 
                 item {
@@ -444,8 +446,8 @@ fun DeviceSpooferScreen(
 
                             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
 
-                            SpooferFieldRow(label = "GL Vendor", value = profile.glVendor)
-                            SpooferFieldRow(label = "GL Renderer", value = profile.glRenderer)
+                            SpooferFieldRow(label = stringResource(R.string.spoof_gl_vendor), value = profile.glVendor)
+                            SpooferFieldRow(label = stringResource(R.string.spoof_gl_renderer), value = profile.glRenderer)
                         }
                     }
                 }

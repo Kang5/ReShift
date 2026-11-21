@@ -23,8 +23,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import ox.fzer0x.snakeloader.*
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.ReShiftCard
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
 import ox.fzer0x.snakeloader.ui.components.ReShiftButtonShape
@@ -137,7 +139,7 @@ fun CodeShareBrowserScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             ReShiftTopAppBar(
-                title = "Frida CodeShare",
+                title = stringResource(R.string.cs_title),
                 onBack = onBack
             )
         }
@@ -149,7 +151,7 @@ fun CodeShareBrowserScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                placeholder = { Text("Search CodeShare...") },
+                placeholder = { Text(stringResource(R.string.cs_search_hint)) },
                 leadingIcon = { Icon(Icons.Default.Search, null) },
                 trailingIcon = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -161,7 +163,7 @@ fun CodeShareBrowserScreen(
                                 Icon(Icons.Default.Close, null)
                             }
                             TextButton(onClick = { loadProjects(searchQuery, 1) }, shape = ReShiftButtonShape) {
-                                Text("Search", fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.common_search), fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -181,11 +183,11 @@ fun CodeShareBrowserScreen(
                     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(32.dp)) {
                         Icon(Icons.Default.CloudOff, null, modifier = Modifier.size(64.dp), tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text("No projects found", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.outline)
+                        Text(stringResource(R.string.cs_no_projects), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.outline)
                         if (searchQuery.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(onClick = { loadProjects(searchQuery, 1) }, shape = ReShiftButtonShape) {
-                                Text("Search Globally", fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.cs_search_global), fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -281,12 +283,12 @@ fun CodeShareBrowserScreen(
                 ) {
                     Icon(Icons.Default.Download, null)
                     Spacer(Modifier.width(8.dp))
-                    Text("Import Script", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.common_import_script), fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { projectToPreview = null }, shape = ReShiftButtonShape) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.common_cancel))
                 }
             },
             shape = ReShiftDialogShape

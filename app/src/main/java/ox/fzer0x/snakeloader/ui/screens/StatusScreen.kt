@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.AppInfo
 import ox.fzer0x.snakeloader.FridaManager
 import ox.fzer0x.snakeloader.ScriptManager
@@ -77,25 +79,25 @@ fun StatusScreen(
                 isActiveStatus = viewModel.fridaRunning,
                 actions = {
                     IconButton(onClick = { scope.launch { viewModel.refreshStatus(context, force = true) } }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.cd_refresh))
                     }
                     IconButton(onClick = { showMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Options")
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_options))
                     }
                     DropdownMenu(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Close") },
+                            text = { Text(stringResource(R.string.action_close)) },
                             onClick = {
                                 showMenu = false
                                 context.findActivity()?.finishAndRemoveTask()
                             },
-                            leadingIcon = { Icon(Icons.Default.Close, contentDescription = "Close ReShift", tint = MaterialTheme.colorScheme.error) }
+                            leadingIcon = { Icon(Icons.Default.Close, contentDescription = stringResource(R.string.cd_close_app), tint = MaterialTheme.colorScheme.error) }
                         )
                         DropdownMenuItem(
-                            text = { Text("Frida Toolbox") },
+                            text = { Text(stringResource(R.string.action_frida_toolbox)) },
                             onClick = {
                                 showMenu = false
                                 onNavigateToToolbox()
@@ -103,7 +105,7 @@ fun StatusScreen(
                             leadingIcon = { Icon(Icons.Default.Terminal, null) }
                         )
                         DropdownMenuItem(
-                            text = { Text("Settings") },
+                            text = { Text(stringResource(R.string.action_settings)) },
                             onClick = {
                                 showMenu = false
                                 onNavigateToSettings()
@@ -111,7 +113,7 @@ fun StatusScreen(
                             leadingIcon = { Icon(Icons.Default.Settings, null) }
                         )
                         DropdownMenuItem(
-                            text = { Text("Join Community") },
+                            text = { Text(stringResource(R.string.action_join_community)) },
                             onClick = {
                                 showMenu = false
                                 try {
@@ -150,18 +152,18 @@ fun StatusScreen(
 
             item {
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                    SectionHeader("System Environment")
+                    SectionHeader(stringResource(R.string.status_section_environment))
                     ReShiftCard {
                         Column(modifier = Modifier.padding(14.dp)) {
                             StatusRow(
-                                label = "Frida Service",
-                                value = if (viewModel.isLoading) "..." else if (viewModel.fridaRunning) "Active" else "Inactive",
+                                label = stringResource(R.string.status_frida_service),
+                                value = if (viewModel.isLoading) "..." else if (viewModel.fridaRunning) stringResource(R.string.common_active) else stringResource(R.string.common_inactive),
                                 color = if (viewModel.fridaRunning) SuccessGreen else MaterialTheme.colorScheme.error,
                                 icon = Icons.Outlined.Dns
                             )
                             if (viewModel.fridaRunning) {
                                 Text(
-                                    "Version ${viewModel.fridaVersion}",
+                                    stringResource(R.string.status_version, viewModel.fridaVersion),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(start = 28.dp)
@@ -175,14 +177,14 @@ fun StatusScreen(
                             )
 
                             StatusRow(
-                                label = "Injection Mode",
+                                label = stringResource(R.string.status_injection_mode),
                                 value = when (if (viewModel.selectedFridaBinary != "auto") viewModel.selectedFridaBinary else viewModel.runningFridaBinary) {
-                                    "cli" -> "RPC (CLI)"
-                                    "inject" -> "Inject"
-                                    "server" -> "Server"
-                                    "gadget" -> "Zygisk (Gadget)"
-                                    "auto" -> "Auto-Detect"
-                                    else -> if (viewModel.fridaRunning) "Active" else "None"
+                                    "cli" -> stringResource(R.string.status_mode_cli)
+                                    "inject" -> stringResource(R.string.status_mode_inject)
+                                    "server" -> stringResource(R.string.status_mode_server)
+                                    "gadget" -> stringResource(R.string.status_mode_gadget)
+                                    "auto" -> stringResource(R.string.status_mode_auto)
+                                    else -> if (viewModel.fridaRunning) stringResource(R.string.common_active) else stringResource(R.string.common_none)
                                 },
                                 color = MaterialTheme.colorScheme.secondary,
                                 icon = Icons.Outlined.Layers
@@ -195,8 +197,8 @@ fun StatusScreen(
                             )
 
                             StatusRow(
-                                label = "Detection Stealth",
-                                value = if (viewModel.isStealthModeEnabled) "Active" else "Default",
+                                label = stringResource(R.string.status_detection_stealth),
+                                value = if (viewModel.isStealthModeEnabled) stringResource(R.string.common_active) else stringResource(R.string.common_default),
                                 color = if (viewModel.isStealthModeEnabled) SuccessGreen else MaterialTheme.colorScheme.onSurfaceVariant,
                                 icon = Icons.Outlined.AdminPanelSettings
                             )
@@ -232,7 +234,7 @@ fun StatusScreen(
 
                                 Column(horizontalAlignment = Alignment.End) {
                                     StatusBadge(
-                                        text = if (!viewModel.isModuleInstalled) "Not Installed" else "v${viewModel.moduleVersion}",
+                                        text = if (!viewModel.isModuleInstalled) stringResource(R.string.status_not_installed) else "v${viewModel.moduleVersion}",
                                         color = if (!viewModel.isModuleInstalled) MaterialTheme.colorScheme.error
                                                 else if (viewModel.hasModuleUpdate) WarningOrange
                                                 else SuccessGreen
@@ -245,7 +247,7 @@ fun StatusScreen(
                                                 shape = RoundedCornerShape(4.dp)
                                             ) {
                                                 Text(
-                                                    text = "(latest)",
+                                                    text = stringResource(R.string.status_latest),
                                                     style = MaterialTheme.typography.labelSmall,
                                                     color = SuccessGreen,
                                                     fontWeight = FontWeight.Bold,
@@ -259,7 +261,7 @@ fun StatusScreen(
                                                 shape = RoundedCornerShape(4.dp)
                                             ) {
                                                 Text(
-                                                    text = "(need update)",
+                                                    text = stringResource(R.string.status_need_update),
                                                     style = MaterialTheme.typography.labelSmall,
                                                     color = WarningOrange,
                                                     fontWeight = FontWeight.Bold,
@@ -278,21 +280,21 @@ fun StatusScreen(
 
             item {
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                    SectionHeader("Security Configuration")
+                    SectionHeader(stringResource(R.string.status_section_security))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         SecurityInfoBox(
                             modifier = Modifier.weight(1f),
-                            title = "Root Access",
-                            value = if (viewModel.hasRoot) "Granted" else "Restricted",
+                            title = stringResource(R.string.status_root_access),
+                            value = if (viewModel.hasRoot) stringResource(R.string.status_granted) else stringResource(R.string.status_restricted),
                             color = if (viewModel.hasRoot) SuccessGreen else MaterialTheme.colorScheme.error
                         )
                         SecurityInfoBox(
                             modifier = Modifier.weight(1f),
-                            title = "SELinux",
-                            value = if (viewModel.isSelinuxPermissive) "Permissive" else "Enforcing",
+                            title = stringResource(R.string.status_selinux),
+                            value = if (viewModel.isSelinuxPermissive) stringResource(R.string.status_permissive) else stringResource(R.string.status_enforcing),
                             color = if (viewModel.isSelinuxPermissive) WarningOrange else SuccessGreen
                         )
                     }
@@ -302,7 +304,7 @@ fun StatusScreen(
             if (viewModel.recentApps.isNotEmpty()) {
                 item {
                     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                        SectionHeader("Recent Spawn Activity")
+                        SectionHeader(stringResource(R.string.status_section_recent))
                     }
                 }
                 items(viewModel.recentApps) { app ->
@@ -372,14 +374,14 @@ fun QuickActionsGrid(
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             QuickActionChip(
-                label = if (isFridaRunning) "Restart Frida" else "Start Frida",
+                label = if (isFridaRunning) stringResource(R.string.status_restart_frida) else stringResource(R.string.status_start_frida),
                 icon = Icons.Default.PowerSettingsNew,
                 onClick = onStartFrida,
                 enabled = !isLoading && hasRoot,
                 modifier = Modifier.weight(1f)
             )
             QuickActionChip(
-                label = "Toolbox",
+                label = stringResource(R.string.status_toolbox),
                 icon = Icons.Default.Build,
                 onClick = onOpenToolbox,
                 modifier = Modifier.weight(1f)
@@ -390,14 +392,14 @@ fun QuickActionsGrid(
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             QuickActionChip(
-                label = "IL2Cpp Dumper",
+                label = stringResource(R.string.status_il2cpp_dumper),
                 icon = Icons.Default.Inventory2,
                 onClick = onOpenIl2CppDumper,
                 tint = SuccessGreen,
                 modifier = Modifier.weight(1f)
             )
             QuickActionChip(
-                label = "UE4 Dumper",
+                label = stringResource(R.string.status_ue4_dumper),
                 icon = Icons.Default.ViewInAr,
                 onClick = onOpenUe4Dumper,
                 tint = WarningOrange,
@@ -409,14 +411,14 @@ fun QuickActionsGrid(
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             QuickActionChip(
-                label = "Memory Inspector",
+                label = stringResource(R.string.status_memory_inspector),
                 icon = Icons.Default.Memory,
                 onClick = { onOpenMemoryInspector?.invoke() },
                 tint = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.weight(1f)
             )
             QuickActionChip(
-                label = "Hardware Spoofer",
+                label = stringResource(R.string.status_hardware_spoofer),
                 icon = Icons.Default.PhoneAndroid,
                 onClick = onOpenHardwareSpoofer,
                 tint = MaterialTheme.colorScheme.primary,
@@ -549,7 +551,7 @@ fun RecentAppListItem(
 
             if (assignedCount > 0) {
                 Text(
-                    text = "$assignedCount scripts",
+                    text = stringResource(R.string.status_scripts_assigned, assignedCount),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
@@ -565,7 +567,7 @@ fun RecentAppListItem(
             ) {
                 Icon(
                     Icons.Default.Close,
-                    contentDescription = "Close App",
+                    contentDescription = stringResource(R.string.status_close_app),
                     tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(18.dp)
                 )

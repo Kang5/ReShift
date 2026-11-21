@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.OverlayService
 import ox.fzer0x.snakeloader.SettingsManager
 import ox.fzer0x.snakeloader.FridaManager
@@ -127,11 +129,11 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             ReShiftTopAppBar(
-                title = "Settings",
+                title = stringResource(R.string.action_settings),
                 onBack = onBack,
                 actions = {
                     IconButton(onClick = { refreshSystemStatus() }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.cd_refresh))
                     }
                 }
             )
@@ -145,11 +147,11 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                SectionHeader("UI & Experience")
+                SectionHeader(stringResource(R.string.settings_section_ui))
                 ReShiftCard {
                     Column(modifier = Modifier.padding(16.dp)) {
                         SettingSwitchRow(
-                            title = "Script Log Overlay",
+                            title = stringResource(R.string.settings_script_log_overlay),
                             checked = isOverlayEnabled,
                             onCheckedChange = { enabled ->
                                 if (enabled && !Settings.canDrawOverlays(context)) {
@@ -163,7 +165,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             }
                         )
                         SettingSwitchRow(
-                            title = "Logcat Overlay",
+                            title = stringResource(R.string.settings_logcat_overlay),
                             checked = isLogcatOverlayEnabled,
                             onCheckedChange = { enabled ->
                                 if (enabled && !Settings.canDrawOverlays(context)) {
@@ -177,7 +179,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             }
                         )
                         SettingSwitchRow(
-                            title = "Frida CLI Overlay",
+                            title = stringResource(R.string.settings_frida_cli_overlay),
                             checked = isFridaOverlayEnabled,
                             onCheckedChange = { enabled ->
                                 if (enabled && !Settings.canDrawOverlays(context)) {
@@ -193,7 +195,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
 
                         if ((isOverlayEnabled || isLogcatOverlayEnabled || isFridaOverlayEnabled) && !Settings.canDrawOverlays(context)) {
                             Text(
-                                "Permission required for overlays.",
+                                stringResource(R.string.settings_overlay_permission),
                                 color = MaterialTheme.colorScheme.error,
                                 style = MaterialTheme.typography.labelSmall,
                                 modifier = Modifier.padding(top = 4.dp)
@@ -205,7 +207,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
                         )
 
-                        Text("Text Size: ${overlayTextSize.toInt()} sp", style = MaterialTheme.typography.labelMedium)
+                        Text(stringResource(R.string.settings_text_size, overlayTextSize.toInt()), style = MaterialTheme.typography.labelMedium)
                         Slider(
                             value = overlayTextSize,
                             onValueChange = {
@@ -217,7 +219,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             steps = 16
                         )
 
-                        Text("Opacity: ${(overlayOpacity * 100).toInt()}%", style = MaterialTheme.typography.labelMedium)
+                        Text(stringResource(R.string.settings_opacity, (overlayOpacity * 100).toInt()), style = MaterialTheme.typography.labelMedium)
                         Slider(
                             value = overlayOpacity,
                             onValueChange = {
@@ -229,7 +231,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                         )
 
                         Spacer(Modifier.height(10.dp))
-                        Text("On-Device Rendering Color", style = MaterialTheme.typography.labelMedium)
+                        Text(stringResource(R.string.settings_render_color), style = MaterialTheme.typography.labelMedium)
                         Spacer(Modifier.height(8.dp))
                         LazyRow(
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -267,12 +269,12 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
             }
 
             item {
-                SectionHeader("System Tweaks")
+                SectionHeader(stringResource(R.string.settings_section_system))
                 ReShiftCard {
                     Column(modifier = Modifier.padding(16.dp)) {
                         SettingSwitchRow(
-                            title = "SELinux Permissive",
-                            description = "Bypass SELinux security policies",
+                            title = stringResource(R.string.settings_selinux_permissive),
+                            description = stringResource(R.string.settings_selinux_permissive_desc),
                             checked = isSelinuxPermissive,
                             onCheckedChange = {
                                 fridaManager.setSelinuxPermissive(it)
@@ -280,8 +282,8 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             }
                         )
                         SettingSwitchRow(
-                            title = "Disable Ptrace Scope",
-                            description = "Allow inter-process debugging",
+                            title = stringResource(R.string.settings_disable_ptrace),
+                            description = stringResource(R.string.settings_disable_ptrace_desc),
                             checked = isPtraceScopeDisabled,
                             enabled = isYamaSupported,
                             onCheckedChange = {
@@ -292,19 +294,19 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             }
                         )
                         if (!isYamaSupported) {
-                            Text("Ptrace not supported by kernel", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
+                            Text(stringResource(R.string.settings_ptrace_unsupported), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
                         }
                     }
                 }
             }
 
             item {
-                SectionHeader("Anti-Detection")
+                SectionHeader(stringResource(R.string.settings_section_antidetect))
                 ReShiftCard {
                     Column(modifier = Modifier.padding(16.dp)) {
                         SettingSwitchRow(
-                            title = "Global Stealth Mode",
-                            description = "Randomize Frida paths & ports",
+                            title = stringResource(R.string.settings_global_stealth),
+                            description = stringResource(R.string.settings_global_stealth_desc),
                             checked = isStealthModeEnabled,
                             onCheckedChange = { if (it) showStealthWarning = true else {
                                 isStealthModeEnabled = false
@@ -313,8 +315,8 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             }}
                         )
                         SettingSwitchRow(
-                            title = "Mask App Icon",
-                            description = "Show as 'System Storage'",
+                            title = stringResource(R.string.settings_mask_icon),
+                            description = stringResource(R.string.settings_mask_icon_desc),
                             checked = isAppMasked,
                             onCheckedChange = {
                                 isAppMasked = it
@@ -332,18 +334,18 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                         ) {
                             Icon(Icons.Default.VisibilityOff, null)
                             Spacer(Modifier.width(8.dp))
-                            Text("Hide from Launcher", fontWeight = FontWeight.Bold)
+                            Text(stringResource(R.string.settings_hide_from_launcher), fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             }
 
             item {
-                SectionHeader("AI Engine & LLM Configuration")
+                SectionHeader(stringResource(R.string.settings_section_ai))
                 ReShiftCard {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            "Select your preferred AI engine for Frida script generation and auto-correction.",
+                            stringResource(R.string.settings_ai_intro),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -357,21 +359,21 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             FilterChip(
                                 selected = viewModel.aiProvider == "GEMINI",
                                 onClick = { viewModel.updateAiProvider("GEMINI") },
-                                label = { Text("Gemini Cloud", maxLines = 1) },
+                                label = { Text(stringResource(R.string.settings_provider_gemini), maxLines = 1) },
                                 shape = ReShiftChipShape,
                                 leadingIcon = { Icon(Icons.Default.Cloud, null, modifier = Modifier.size(16.dp)) }
                             )
                             FilterChip(
                                 selected = viewModel.aiProvider == "OLLAMA",
                                 onClick = { viewModel.updateAiProvider("OLLAMA") },
-                                label = { Text("Ollama (127.0.0.1 / PC)", maxLines = 1) },
+                                label = { Text(stringResource(R.string.settings_provider_ollama), maxLines = 1) },
                                 shape = ReShiftChipShape,
                                 leadingIcon = { Icon(Icons.Default.Dns, null, modifier = Modifier.size(16.dp)) }
                             )
                             FilterChip(
                                 selected = viewModel.aiProvider == "ON_DEVICE_GGUF",
                                 onClick = { viewModel.updateAiProvider("ON_DEVICE_GGUF") },
-                                label = { Text("On-Device GGUF (Mobile)", maxLines = 1) },
+                                label = { Text(stringResource(R.string.settings_provider_gguf), maxLines = 1) },
                                 shape = ReShiftChipShape,
                                 leadingIcon = { Icon(Icons.Default.Smartphone, null, modifier = Modifier.size(16.dp)) }
                             )
@@ -389,7 +391,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                     apiKeyInput = it
                                     viewModel.updateGeminiApiKey(it)
                                 },
-                                label = { Text("Gemini API Key") },
+                                label = { Text(stringResource(R.string.settings_gemini_api_key)) },
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = ReShiftButtonShape,
                                 singleLine = true,
@@ -425,7 +427,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             val localGgufFiles = remember { viewModel.getDownloadedGgufModels(context) }
 
                             Text(
-                                text = "On-Device GGUF LLM Models (Local Inference):",
+                                text = stringResource(R.string.settings_gguf_models_title),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold
                             )
@@ -444,14 +446,14 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                 PresetGgufModel(
                                     name = "Qwen 2.5 Coder 1.5B Instruct",
                                     sizeText = "~1.1 GB",
-                                    ramText = "RAM: 4-6 GB Phone (Min. 1.2 GB Free)",
+                                    ramText = stringResource(R.string.settings_ram_4gb),
                                     url = "https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF/resolve/main/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
                                     filename = "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf"
                                 ),
                                 PresetGgufModel(
                                     name = "Qwen 2.5 Coder 3B Instruct (Abliterated)",
                                     sizeText = "~1.9 GB",
-                                    ramText = "RAM: 8 GB Phone (Min. 2.5 GB Free)",
+                                    ramText = stringResource(R.string.settings_ram_8gb),
                                     url = "https://huggingface.co/bartowski/Qwen2.5-Coder-3B-Instruct-abliterated-GGUF/resolve/main/Qwen2.5-Coder-3B-Instruct-abliterated-Q4_K_M.gguf",
                                     filename = "qwen2.5-coder-3b-instruct-abliterated-q4_k_m.gguf",
                                     isUncensored = true
@@ -459,7 +461,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                 PresetGgufModel(
                                     name = "Qwen 2.5 Coder 7B Instruct (Abliterated)",
                                     sizeText = "~4.6 GB",
-                                    ramText = "RAM: 12-16 GB Flagship (Min. 5.5 GB Free)",
+                                    ramText = stringResource(R.string.settings_ram_12gb),
                                     url = "https://huggingface.co/bartowski/Qwen2.5-Coder-7B-Instruct-abliterated-GGUF/resolve/main/Qwen2.5-Coder-7B-Instruct-abliterated-Q4_K_M.gguf",
                                     filename = "qwen2.5-coder-7b-instruct-abliterated-q4_k_m.gguf",
                                     isUncensored = true
@@ -502,7 +504,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                                             shape = RoundedCornerShape(4.dp)
                                                         ) {
                                                             Text(
-                                                                "UNCENSORED",
+                                                                stringResource(R.string.settings_badge_uncensored),
                                                                 fontSize = 8.sp,
                                                                 fontWeight = FontWeight.Bold,
                                                                 color = MaterialTheme.colorScheme.error,
@@ -551,7 +553,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                                     verticalAlignment = Alignment.CenterVertically
                                                 ) {
                                                     Text(
-                                                        text = "On Device: $sizeMb MB (${downloadedFile?.name})",
+                                                        text = stringResource(R.string.settings_on_device_size, sizeMb, downloadedFile?.name ?: ""),
                                                         fontSize = 9.sp,
                                                         color = MaterialTheme.colorScheme.secondary
                                                     )
@@ -604,7 +606,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             if (customFiles.isNotEmpty()) {
                                 Spacer(Modifier.height(10.dp))
                                 Text(
-                                    text = "Manually Added GGUF Files:",
+                                    text = stringResource(R.string.settings_custom_gguf),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -624,7 +626,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                         ) {
                                             Column {
                                                 Text(customFile.name, fontWeight = FontWeight.Bold, fontSize = 11.sp)
-                                                Text("${customFile.length() / (1024 * 1024)} MB | Manual GGUF File", fontSize = 9.sp, color = MaterialTheme.colorScheme.outline)
+                                                Text(stringResource(R.string.settings_custom_gguf_line, customFile.length() / (1024 * 1024)), fontSize = 9.sp, color = MaterialTheme.colorScheme.outline)
                                             }
                                             if (isCustomActive) {
                                                 Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
@@ -646,10 +648,10 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Icon(Icons.Default.Backup, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
                                         Spacer(Modifier.width(6.dp))
-                                        Text("Qwen GGUF Backup & Restore (/Downloads)", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                        Text(stringResource(R.string.settings_gguf_backup), fontWeight = FontWeight.Bold, fontSize = 12.sp)
                                     }
                                     Text(
-                                        text = "Backup your downloaded Qwen GGUF models to /Download/ReShift_LLM_Models or restore them back into the app.",
+                                        text = stringResource(R.string.settings_gguf_backup_desc),
                                         fontSize = 10.sp,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -669,7 +671,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                         ) {
                                             Icon(Icons.Default.Upload, null, modifier = Modifier.size(14.dp))
                                             Spacer(Modifier.width(4.dp))
-                                            Text("Backup", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                            Text(stringResource(R.string.settings_backup), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                         }
 
                                         Button(
@@ -683,7 +685,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                         ) {
                                             Icon(Icons.Default.Download, null, modifier = Modifier.size(14.dp))
                                             Spacer(Modifier.width(4.dp))
-                                            Text("Restore", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                            Text(stringResource(R.string.settings_restore), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                         }
                                     }
                                 }
@@ -698,8 +700,8 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                     urlInput = it
                                     viewModel.updateOllamaBaseUrl(it)
                                 },
-                                label = { Text("Ollama Server URL") },
-                                placeholder = { Text("e.g. http://127.0.0.1:11434 or http://192.168.1.X:11434") },
+                                label = { Text(stringResource(R.string.settings_ollama_url)) },
+                                placeholder = { Text(stringResource(R.string.settings_ollama_url_placeholder)) },
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = ReShiftButtonShape,
                                 singleLine = true
@@ -713,7 +715,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                                     modelInput = it
                                     viewModel.updateOllamaModel(it)
                                 },
-                                label = { Text("Uncensored Model Name") },
+                                label = { Text(stringResource(R.string.settings_ollama_model)) },
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = ReShiftButtonShape,
                                 singleLine = true
@@ -739,15 +741,15 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                             ) {
                                 Icon(Icons.Default.Dns, null, modifier = Modifier.size(16.dp))
                                 Spacer(Modifier.width(6.dp))
-                                Text("Pull via Ollama Server", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.settings_pull_ollama), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                             }
                         }
 
                         Spacer(Modifier.height(8.dp))
 
                         SettingSwitchRow(
-                            title = "Closed-Loop Auto-Correction",
-                            description = "Automatically catch runtime errors & retry script generation",
+                            title = stringResource(R.string.settings_auto_correction),
+                            description = stringResource(R.string.settings_auto_correction_desc),
                             checked = viewModel.aiAutoCorrectionEnabled,
                             onCheckedChange = { viewModel.updateAiAutoCorrectionEnabled(it) }
                         )
@@ -756,29 +758,29 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
             }
 
             item {
-                SectionHeader("Frida Binary Engine & Downloader")
+                SectionHeader(stringResource(R.string.settings_section_frida_binary))
                 FridaBinaryManagerCard(fridaManager = fridaManager)
             }
 
             item {
-                SectionHeader("Core Module")
+                SectionHeader(stringResource(R.string.settings_section_core_module))
                 ReShiftCard {
                     Column(modifier = Modifier.padding(16.dp)) {
                         StatusRow(
-                            label = "Status",
-                            value = if (viewModel.isModuleInstalled) "Installed" else "Missing",
+                            label = stringResource(R.string.settings_status),
+                            value = if (viewModel.isModuleInstalled) stringResource(R.string.settings_installed) else stringResource(R.string.settings_missing),
                             color = if (viewModel.isModuleInstalled) SuccessGreen else MaterialTheme.colorScheme.error,
                             icon = Icons.Default.Extension
                         )
                         StatusRow(
-                            label = "Version",
+                            label = stringResource(R.string.settings_version_label),
                             value = viewModel.moduleVersion,
                             color = MaterialTheme.colorScheme.secondary,
                             icon = Icons.Default.Info
                         )
                         StatusRow(
-                            label = "Service",
-                            value = if (viewModel.isModuleServiceRunning) "Running" else "Stopped",
+                            label = stringResource(R.string.settings_service),
+                            value = if (viewModel.isModuleServiceRunning) stringResource(R.string.settings_running) else stringResource(R.string.settings_stopped),
                             color = if (viewModel.isModuleServiceRunning) SuccessGreen else WarningOrange,
                             icon = Icons.Default.PlayCircle
                         )
@@ -795,7 +797,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, onBack: () -> Unit) {
                         ) {
                             Icon(Icons.Default.SystemUpdate, null, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(8.dp))
-                            Text(if (viewModel.isModuleInstalled) "Update Module" else "Install Module", fontWeight = FontWeight.Bold)
+                            Text(if (viewModel.isModuleInstalled) stringResource(R.string.settings_update_module) else stringResource(R.string.settings_install_module), fontWeight = FontWeight.Bold)
                         }
                     }
                 }

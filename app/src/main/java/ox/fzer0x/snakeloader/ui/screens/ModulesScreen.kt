@@ -35,9 +35,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import kotlinx.coroutines.launch
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.DownloadedScript
 import ox.fzer0x.snakeloader.FridaManager
 import ox.fzer0x.snakeloader.ModuleMetadata
@@ -113,26 +115,26 @@ fun ModulesScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             ReShiftTopAppBar(
-                title = "Modules",
+                title = stringResource(R.string.modules_title),
                 subtitle = "${allScripts.size} modules installed",
                 actions = {
                     IconButton(onClick = { showMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Options")
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.common_options))
                     }
                     DropdownMenu(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Close") },
+                            text = { Text(stringResource(R.string.common_close)) },
                             onClick = {
                                 showMenu = false
                                 context.findActivity()?.finishAndRemoveTask()
                             },
-                            leadingIcon = { Icon(Icons.Default.Close, contentDescription = "Close ReShift", tint = MaterialTheme.colorScheme.error) }
+                            leadingIcon = { Icon(Icons.Default.Close, contentDescription = stringResource(R.string.common_close_reshift), tint = MaterialTheme.colorScheme.error) }
                         )
                         DropdownMenuItem(
-                            text = { Text("Frida Toolbox") },
+                            text = { Text(stringResource(R.string.frida_toolbox_title)) },
                             onClick = {
                                 showMenu = false
                                 onNavigateToToolbox()
@@ -140,7 +142,7 @@ fun ModulesScreen(
                             leadingIcon = { Icon(Icons.Default.Terminal, null) }
                         )
                         DropdownMenuItem(
-                            text = { Text("Settings") },
+                            text = { Text(stringResource(R.string.common_settings)) },
                             onClick = {
                                 showMenu = false
                                 onNavigateToSettings()
@@ -148,7 +150,7 @@ fun ModulesScreen(
                             leadingIcon = { Icon(Icons.Default.Settings, null) }
                         )
                         DropdownMenuItem(
-                            text = { Text("Join Community") },
+                            text = { Text(stringResource(R.string.modules_join_community)) },
                             onClick = {
                                 showMenu = false
                                 try {
@@ -171,7 +173,7 @@ fun ModulesScreen(
                         modifier = Modifier.padding(bottom = 80.dp)
                     ) {
                         FabMenuItem(
-                            label = "Browse CodeShare",
+                            label = stringResource(R.string.modules_browse_codeshare),
                             icon = Icons.Default.Public,
                             color = MaterialTheme.colorScheme.tertiaryContainer,
                             onClick = {
@@ -180,7 +182,7 @@ fun ModulesScreen(
                             }
                         )
                         FabMenuItem(
-                            label = "Import from ReShift",
+                            label = stringResource(R.string.modules_import_reshift),
                             icon = Icons.Default.Extension,
                             color = MaterialTheme.colorScheme.secondaryContainer,
                             onClick = {
@@ -189,7 +191,7 @@ fun ModulesScreen(
                             }
                         )
                         FabMenuItem(
-                            label = "Import from Storage",
+                            label = stringResource(R.string.modules_import_storage),
                             icon = Icons.Default.FileOpen,
                             color = MaterialTheme.colorScheme.primaryContainer,
                             onClick = {
@@ -206,7 +208,7 @@ fun ModulesScreen(
                 ) {
                     Icon(
                         if (showFabMenu) Icons.Default.Close else Icons.Default.Add,
-                        contentDescription = "Add module"
+                        contentDescription = stringResource(R.string.modules_add)
                     )
                 }
             }
@@ -229,21 +231,21 @@ fun ModulesScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     MiniStatBadge(
-                        label = "Total Modules",
+                        label = stringResource(R.string.modules_total),
                         value = "${allScripts.size}",
                         icon = Icons.Default.Extension,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.weight(1f)
                     )
                     MiniStatBadge(
-                        label = "Active Now",
+                        label = stringResource(R.string.modules_active_now),
                         value = "$activeCount",
                         icon = Icons.Default.PowerSettingsNew,
                         color = if (activeCount > 0) SuccessGreen else MaterialTheme.colorScheme.outline,
                         modifier = Modifier.weight(1f)
                     )
                     MiniStatBadge(
-                        label = "Target Apps",
+                        label = stringResource(R.string.modules_target_apps),
                         value = "$targetedAppsCount",
                         icon = Icons.AutoMirrored.Filled.Label,
                         color = MaterialTheme.colorScheme.tertiary,
@@ -697,7 +699,7 @@ fun ModuleListItem(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Android,
-                                contentDescription = "Install Mod Menu",
+                                contentDescription = stringResource(R.string.modules_install_menu),
                                 tint = Color(0xFF3DDC84),
                                 modifier = Modifier.size(14.dp)
                             )
@@ -909,7 +911,7 @@ fun ModuleListItem(
                     ) {
                         Icon(
                             imageVector = if (script.metadata.noEdit) Icons.Default.Lock else Icons.Default.Code,
-                            contentDescription = "Edit Code",
+                            contentDescription = stringResource(R.string.modules_edit_code),
                             modifier = Modifier.size(18.dp),
                             tint = if (script.metadata.noEdit) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
                         )
@@ -922,7 +924,7 @@ fun ModuleListItem(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ContentCopy,
-                            contentDescription = "Duplicate Script",
+                            contentDescription = stringResource(R.string.modules_dup_script),
                             modifier = Modifier.size(18.dp),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
@@ -936,7 +938,7 @@ fun ModuleListItem(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
-                                contentDescription = "More Actions",
+                                contentDescription = stringResource(R.string.modules_more_actions),
                                 modifier = Modifier.size(18.dp)
                             )
                         }
@@ -946,7 +948,7 @@ fun ModuleListItem(
                             onDismissRequest = { showMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Configure Scope Apps") },
+                                text = { Text(stringResource(R.string.modules_scope_apps)) },
                                 onClick = {
                                     showMenu = false
                                     onNavigateToDetails()
@@ -964,7 +966,7 @@ fun ModuleListItem(
                             )
 
                             DropdownMenuItem(
-                                text = { Text("Duplicate Module") },
+                                text = { Text(stringResource(R.string.modules_dup_module)) },
                                 onClick = {
                                     showMenu = false
                                     onDuplicate()
@@ -973,7 +975,7 @@ fun ModuleListItem(
                             )
 
                             DropdownMenuItem(
-                                text = { Text("Share Module") },
+                                text = { Text(stringResource(R.string.modules_share_module)) },
                                 onClick = {
                                     showMenu = false
                                     shareModule(context, script)
@@ -984,7 +986,7 @@ fun ModuleListItem(
                             HorizontalDivider()
 
                             DropdownMenuItem(
-                                text = { Text("Delete Module") },
+                                text = { Text(stringResource(R.string.modules_delete_module)) },
                                 onClick = {
                                     showMenu = false
                                     showDeleteDialog = true
@@ -1035,7 +1037,7 @@ fun ModuleListItem(
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                     shape = ReShiftButtonShape
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.common_delete))
                 }
             },
             dismissButton = {
@@ -1043,7 +1045,7 @@ fun ModuleListItem(
                     onClick = { showDeleteDialog = false },
                     shape = ReShiftButtonShape
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.common_cancel))
                 }
             }
         )

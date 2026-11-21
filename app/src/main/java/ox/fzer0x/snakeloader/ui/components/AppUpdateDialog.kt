@@ -13,7 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import ox.fzer0x.snakeloader.UpdateManager
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.theme.SuccessGreen
 
 @Composable
@@ -74,11 +76,11 @@ fun AppUpdateDialog(
                 when (state) {
                     is UpdateManager.UpdateState.Checking -> {
                         CircularProgressIndicator(modifier = Modifier.padding(16.dp))
-                        Text("Looking for the latest release on GitHub...")
+                        Text(stringResource(R.string.upd_checking))
                     }
                     is UpdateManager.UpdateState.UpdateAvailable -> {
                         Text(
-                            text = "A new version of ReShift is available!",
+                            text = stringResource(R.string.upd_available),
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Spacer(Modifier.height(8.dp))
@@ -88,21 +90,21 @@ fun AppUpdateDialog(
                         )
                         Spacer(Modifier.height(16.dp))
                         Text(
-                            text = "This update will be installed automatically using root access.",
+                            text = stringResource(R.string.upd_auto_install),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     is UpdateManager.UpdateState.UpToDate -> {
                         Text(
-                            text = "ReShift is up to date!",
+                            text = stringResource(R.string.upd_uptodate),
                             style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = SuccessGreen
                         )
                         Spacer(Modifier.height(6.dp))
                         Text(
-                            text = "You are already using the latest version of ReShift.",
+                            text = stringResource(R.string.upd_uptodate_desc),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -132,10 +134,10 @@ fun AppUpdateDialog(
                     }
                     is UpdateManager.UpdateState.Installing -> {
                         CircularProgressIndicator(modifier = Modifier.padding(16.dp))
-                        Text("Installing APK with root access...")
+                        Text(stringResource(R.string.upd_installing))
                     }
                     is UpdateManager.UpdateState.Success -> {
-                        Text("ReShift has been updated successfully.")
+                        Text(stringResource(R.string.upd_done))
                     }
                     else -> {}
                 }
@@ -147,14 +149,14 @@ fun AppUpdateDialog(
                     Button(onClick = onDownload, shape = ReShiftButtonShape) {
                         Icon(Icons.Default.Download, null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("Download & Install", fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.upd_download_install), fontWeight = FontWeight.Bold)
                     }
                 }
                 is UpdateManager.UpdateState.UpToDate,
                 is UpdateManager.UpdateState.Success,
                 is UpdateManager.UpdateState.Error -> {
                     Button(onClick = onDismiss, shape = ReShiftButtonShape) {
-                        Text("OK", fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.common_ok), fontWeight = FontWeight.Bold)
                     }
                 }
                 else -> {}
@@ -163,11 +165,11 @@ fun AppUpdateDialog(
         dismissButton = {
             if (state is UpdateManager.UpdateState.UpdateAvailable) {
                 TextButton(onClick = onDismiss, shape = ReShiftButtonShape) {
-                    Text("Later")
+                    Text(stringResource(R.string.common_later))
                 }
             } else if (state is UpdateManager.UpdateState.Checking) {
                 TextButton(onClick = onDismiss, shape = ReShiftButtonShape) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.common_cancel))
                 }
             }
         },

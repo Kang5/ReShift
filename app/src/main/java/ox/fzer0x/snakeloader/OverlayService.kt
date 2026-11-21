@@ -39,6 +39,7 @@ import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import ox.fzer0x.snakeloader.ai.AutonomousAgentEngine
@@ -279,7 +280,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                     TYPE_FRIDA -> Icons.Default.Terminal
                     else -> Icons.Default.Close
                 },
-                contentDescription = "Expand", 
+                contentDescription = stringResource(R.string.cd_expand), 
                 tint = color
             )
         }
@@ -305,9 +306,9 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
             else -> Color.White
         }
         val title = when(type) {
-            TYPE_SCRIPT -> "Scripts"
-            TYPE_LOGCAT -> "Logcat"
-            TYPE_FRIDA -> "Frida CLI"
+            TYPE_SCRIPT -> stringResource(R.string.overlay_title_scripts)
+            TYPE_LOGCAT -> stringResource(R.string.overlay_title_logcat)
+            TYPE_FRIDA -> stringResource(R.string.overlay_title_frida)
             else -> ""
         }
 
@@ -339,7 +340,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                     modifier = Modifier.weight(1f)
                 )
                 IconButton(onClick = { minimizedState.value = true }, modifier = Modifier.size(20.dp)) {
-                    Icon(Icons.Default.Remove, contentDescription = "Minimize", tint = themeColor, modifier = Modifier.size(14.dp))
+                    Icon(Icons.Default.Remove, contentDescription = stringResource(R.string.cd_minimize), tint = themeColor, modifier = Modifier.size(14.dp))
                 }
                 IconButton(onClick = { 
                     val settings = SettingsManager(this@OverlayService)
@@ -361,7 +362,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                         stopSelf()
                     }
                 }, modifier = Modifier.size(20.dp)) {
-                    Icon(Icons.Default.Close, contentDescription = "Close", tint = themeColor, modifier = Modifier.size(14.dp))
+                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.cd_close), tint = themeColor, modifier = Modifier.size(14.dp))
                 }
             }
 
@@ -519,7 +520,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Text(
-                                            text = "ReShift AI Agent",
+                                            text = stringResource(R.string.agent_title),
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 14.sp,
                                             color = Color.White
@@ -530,7 +531,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                                         shape = RoundedCornerShape(6.dp)
                                     ) {
                                         Text(
-                                            text = "Versuch #$currentIteration",
+                                            text = stringResource(R.string.agent_attempt, currentIteration),
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Bold,
                                             color = Color(0xFFA6ADC8),
@@ -540,7 +541,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                                 }
 
                                 Text(
-                                    text = "Ziel im Spiel erreicht? Wurde das gewünschte Ergebnis (z.B. Budget/Coins auf 50 Mio erhöht) erzielt?",
+                                    text = stringResource(R.string.agent_question),
                                     fontSize = 12.sp,
                                     color = Color(0xFFCDD6F4),
                                     lineHeight = 16.sp
@@ -559,7 +560,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                                         ) {
                                             Icon(Icons.Default.FlashOn, null, tint = Color(0xFF58A6FF), modifier = Modifier.size(12.dp))
                                             Spacer(modifier = Modifier.width(4.dp))
-                                            Text("⚡ Dynamic RPC Controls Active", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color(0xFF58A6FF))
+                                            Text(stringResource(R.string.agent_rpc_active), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color(0xFF58A6FF))
                                         }
                                     }
                                 }
@@ -579,7 +580,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                                     ) {
                                         Icon(Icons.Default.Check, null, modifier = Modifier.size(16.dp))
                                         Spacer(modifier = Modifier.width(4.dp))
-                                        Text("JA!", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        Text(stringResource(R.string.agent_yes), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                     }
 
                                     Button(
@@ -598,7 +599,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                                     ) {
                                         Icon(Icons.Default.Close, null, modifier = Modifier.size(16.dp))
                                         Spacer(modifier = Modifier.width(4.dp))
-                                        Text("NEIN", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        Text(stringResource(R.string.agent_no), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                     }
                                 }
 
@@ -611,7 +612,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                                             value = refinedPromptInput,
                                             onValueChange = { refinedPromptInput = it },
                                             modifier = Modifier.fillMaxWidth(),
-                                            placeholder = { Text("Tipp für KI (z.B. 'Hooke AddCoins')", fontSize = 11.sp, color = Color.Gray) },
+                                            placeholder = { Text(stringResource(R.string.agent_hint_placeholder), fontSize = 11.sp, color = Color.Gray) },
                                             maxLines = 2,
                                             textStyle = LocalTextStyle.current.copy(fontSize = 12.sp, color = Color.White)
                                         )
@@ -633,7 +634,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                                         ) {
                                             Icon(Icons.Default.Refresh, null, modifier = Modifier.size(16.dp))
                                             Spacer(modifier = Modifier.width(6.dp))
-                                            Text("Nachjustieren & Erneut versuchen", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                            Text(stringResource(R.string.agent_refine), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                         }
                                     }
                                 }
@@ -650,7 +651,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                                     color = Color(0xFF89B4FA)
                                 )
                                 Text(
-                                    text = "ReShift Agent: ${agentState.label}",
+                                    text = stringResource(R.string.agent_status, agentState.label),
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White
@@ -709,7 +710,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                 ) {
                     if (isMinimized) {
                         IconButton(onClick = { isTrainerMinimized.value = false }, modifier = Modifier.size(40.dp)) {
-                            Icon(Icons.Default.SportsEsports, "Expand Trainer", tint = Color(0xFF81C784))
+                            Icon(Icons.Default.SportsEsports, stringResource(R.string.cd_expand_trainer), tint = Color(0xFF81C784))
                         }
                     } else {
                         Column(modifier = Modifier.padding(8.dp)) {
@@ -721,15 +722,15 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Icon(Icons.Default.SportsEsports, null, tint = Color(0xFF81C784), modifier = Modifier.size(18.dp))
                                     Spacer(Modifier.width(6.dp))
-                                    Text("ReShift Trainer", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                                    Text(stringResource(R.string.trainer_title), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color.White)
                                 }
 
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     IconButton(onClick = { controller?.restoreAllVerified() }, modifier = Modifier.size(24.dp)) {
-                                        Icon(Icons.Default.Restore, "Restore All", tint = Color.LightGray, modifier = Modifier.size(16.dp))
+                                        Icon(Icons.Default.Restore, stringResource(R.string.cd_restore_all), tint = Color.LightGray, modifier = Modifier.size(16.dp))
                                     }
                                     IconButton(onClick = { isTrainerMinimized.value = true }, modifier = Modifier.size(24.dp)) {
-                                        Icon(Icons.Default.Remove, "Minimize", tint = Color.LightGray, modifier = Modifier.size(16.dp))
+                                        Icon(Icons.Default.Remove, stringResource(R.string.cd_minimize), tint = Color.LightGray, modifier = Modifier.size(16.dp))
                                     }
                                 }
                             }
@@ -738,7 +739,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
 
                             if (patches.isEmpty()) {
                                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                    Text("No active patches", fontSize = 11.sp, color = Color.Gray)
+                                    Text(stringResource(R.string.trainer_no_patches), fontSize = 11.sp, color = Color.Gray)
                                 }
                             } else {
                                 LazyColumn(
@@ -779,7 +780,7 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
                 "OverlayServiceChannel",
-                "Overlay Service Channel",
+                getString(R.string.overlay_channel_name),
                 NotificationManager.IMPORTANCE_LOW
             )
             val manager = getSystemService(NotificationManager::class.java)
@@ -790,14 +791,14 @@ class OverlayService : Service(), LifecycleOwner, SavedStateRegistryOwner {
     private fun createNotification(): Notification {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification.Builder(this, "OverlayServiceChannel")
-                .setContentTitle("ReShift Overlay")
-                .setContentText("Monitoring system logs...")
+                .setContentTitle(getString(R.string.overlay_notif_title))
+                .setContentText(getString(R.string.overlay_notif_text))
                 .setSmallIcon(android.R.drawable.ic_menu_info_details)
                 .build()
         } else {
             Notification.Builder(this)
-                .setContentTitle("ReShift Overlay")
-                .setContentText("Monitoring system logs...")
+                .setContentTitle(getString(R.string.overlay_notif_title))
+                .setContentText(getString(R.string.overlay_notif_text))
                 .setSmallIcon(android.R.drawable.ic_menu_info_details)
                 .build()
         }

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.drawable.toBitmap
 import ox.fzer0x.snakeloader.ZygiskManager
 import ox.fzer0x.snakeloader.ModuleManager
@@ -33,6 +34,7 @@ import ox.fzer0x.snakeloader.ZygiskAppEntry
 import ox.fzer0x.snakeloader.ScriptManager
 import ox.fzer0x.snakeloader.AppInfo
 import ox.fzer0x.snakeloader.DownloadedScript
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.ReShiftCard
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
 import ox.fzer0x.snakeloader.ui.components.ReShiftButtonShape
@@ -81,12 +83,12 @@ fun ZygiskSettingsScreen(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             ReShiftTopAppBar(
-                title = "Zygisk Inject",
+                title = stringResource(R.string.zygisk_title),
                 actions = {
                     IconButton(onClick = {
                         zygiskManager.saveConfig(zygiskManager.getConfig())
                     }) {
-                        Icon(Icons.Default.Save, contentDescription = "Save Config")
+                        Icon(Icons.Default.Save, contentDescription = stringResource(R.string.zygisk_save_config))
                     }
                 }
             )
@@ -97,7 +99,7 @@ fun ZygiskSettingsScreen(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Target App")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.zygisk_add_target))
             }
         }
     ) { padding ->
@@ -165,7 +167,7 @@ fun ZygiskSettingsScreen(
             }
 
             item {
-                SectionHeader("GLOBAL HOOK LIST")
+                SectionHeader(stringResource(R.string.zygisk_global_hook))
             }
 
             if (apps.isEmpty()) {
@@ -240,7 +242,7 @@ fun ZygiskSettingsScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Code, null, tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(12.dp))
-                    Text("Select Boot Scripts", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.zygisk_select_boot), fontWeight = FontWeight.Bold)
                 }
             },
             text = {
@@ -302,7 +304,7 @@ fun ZygiskSettingsScreen(
             },
             confirmButton = {
                 Button(onClick = { selectedPackageForScript = null }, shape = ReShiftButtonShape) {
-                    Text("Done", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.common_done), fontWeight = FontWeight.Bold)
                 }
             },
             shape = ReShiftDialogShape
@@ -352,9 +354,9 @@ fun AppPickerDialog(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Select Target App", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.il2cpp_select_target_app), fontWeight = FontWeight.Bold)
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("System", style = MaterialTheme.typography.labelSmall)
+                    Text(stringResource(R.string.zygisk_system), style = MaterialTheme.typography.labelSmall)
                     Checkbox(
                         checked = showSystemApps,
                         onCheckedChange = { showSystemApps = it }
@@ -368,7 +370,7 @@ fun AppPickerDialog(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Search apps...") },
+                    placeholder = { Text(stringResource(R.string.common_search_apps)) },
                     leadingIcon = { Icon(Icons.Default.Search, null) },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
@@ -400,7 +402,7 @@ fun AppPickerDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss, shape = ReShiftButtonShape) { Text("Cancel") }
+            TextButton(onClick = onDismiss, shape = ReShiftButtonShape) { Text(stringResource(R.string.common_cancel)) }
         },
         shape = ReShiftDialogShape
     )
@@ -549,7 +551,7 @@ fun ZygiskAppItem(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                text = "Load Script",
+                                text = stringResource(R.string.zygisk_load_script),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.SemiBold
@@ -587,7 +589,7 @@ fun ZygiskAppItem(
                             ) {
                                 Icon(
                                     Icons.Default.Add,
-                                    contentDescription = "Edit Scripts",
+                                    contentDescription = stringResource(R.string.zygisk_edit_scripts),
                                     modifier = Modifier.padding(4.dp).size(14.dp),
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -602,7 +604,7 @@ fun ZygiskAppItem(
             IconButton(onClick = onDelete) {
                 Icon(
                     Icons.Default.Delete,
-                    contentDescription = "Delete",
+                    contentDescription = stringResource(R.string.common_delete),
                     tint = MaterialTheme.colorScheme.error
                 )
             }

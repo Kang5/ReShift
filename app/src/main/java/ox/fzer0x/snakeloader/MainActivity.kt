@@ -116,20 +116,20 @@ class MainActivity : ComponentActivity() {
                     
                     launch(Dispatchers.IO) {
                         withContext(Dispatchers.Main) {
-                            bootStepText = "[1/5] Checking Root Access Environment..."
+                            bootStepText = getString(R.string.boot_step_1)
                             bootProgress = 0.15f
                         }
                         val hasRoot = fridaManager.hasRootAccess(forceCheck = true)
 
                         withContext(Dispatchers.Main) {
-                            bootStepText = "[2/5] Initializing Repositories & Script Engine..."
+                            bootStepText = getString(R.string.boot_step_2)
                             bootProgress = 0.35f
                         }
                         githubApiService.initialize()
                         scriptManager.initialize()
 
                         withContext(Dispatchers.Main) {
-                            bootStepText = "[3/5] Verifying ReShift Root Module Status..."
+                            bootStepText = getString(R.string.boot_step_3)
                             bootProgress = 0.55f
                         }
                         val moduleManager = ModuleManager(this@MainActivity, settingsManager)
@@ -138,7 +138,7 @@ class MainActivity : ComponentActivity() {
                         val assetVersionCode = moduleManager.getAssetModuleVersionCode()
 
                         withContext(Dispatchers.Main) {
-                            bootStepText = "[4/5] Loading Frida Engine & Home Status Environment..."
+                            bootStepText = getString(R.string.boot_step_4)
                             bootProgress = 0.75f
                         }
                         if (hasRoot && !fridaManager.isFridaServerRunning()) {
@@ -148,7 +148,7 @@ class MainActivity : ComponentActivity() {
                         statusViewModel.refreshStatus(this@MainActivity, force = true)
 
                         withContext(Dispatchers.Main) {
-                            bootStepText = "[5/5] System Boot Complete"
+                            bootStepText = getString(R.string.boot_step_5)
                             bootProgress = 1.0f
                         }
                         delay(350)
@@ -174,11 +174,11 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
                 val items = listOf(
-                    NavigationItem("Home", Screen.Status.route, Icons.Default.Home),
-                    NavigationItem("Modules", Screen.Modules.route, Icons.Default.ViewModule),
-                    NavigationItem("Apps", Screen.Apps.route, Icons.Default.Apps),
-                    NavigationItem("Zygisk", Screen.ZygiskSettings.route, Icons.Default.BugReport),
-                    NavigationItem("Logs", Screen.Logs.route, Icons.AutoMirrored.Filled.ListAlt)
+                    NavigationItem(getString(R.string.nav_home), Screen.Status.route, Icons.Default.Home),
+                    NavigationItem(getString(R.string.nav_modules), Screen.Modules.route, Icons.Default.ViewModule),
+                    NavigationItem(getString(R.string.nav_apps), Screen.Apps.route, Icons.Default.Apps),
+                    NavigationItem(getString(R.string.nav_zygisk), Screen.ZygiskSettings.route, Icons.Default.BugReport),
+                    NavigationItem(getString(R.string.nav_logs), Screen.Logs.route, Icons.AutoMirrored.Filled.ListAlt)
                 )
 
                 Scaffold(
@@ -231,11 +231,11 @@ class MainActivity : ComponentActivity() {
                         AlertDialog(
                             onDismissRequest = { showModuleDialog = null },
                             icon = { Icon(Icons.Default.Warning, null, tint = MaterialTheme.colorScheme.primary) },
-                            title = { Text(if (type == ModuleDialogType.REQUIRED) "Module Required" else "Update Available") },
+                            title = { Text(if (type == ModuleDialogType.REQUIRED) getString(R.string.module_required_title) else getString(R.string.module_update_title)) },
                             text = { 
                                 Text(if (type == ModuleDialogType.REQUIRED) 
-                                    "ReShift Root module is not installed. Please install it in Settings to enable all features."
-                                    else "A new version of ReShift Root module is available. Please update it in Settings.")
+                                    getString(R.string.module_required_message)
+                                    else getString(R.string.module_update_message))
                             },
                             confirmButton = {
                                 Button(
@@ -245,7 +245,7 @@ class MainActivity : ComponentActivity() {
                                     },
                                     shape = ReShiftButtonShape
                                 ) {
-                                    Text("Go to Settings")
+                                    Text(getString(R.string.go_to_settings))
                                 }
                             },
                             dismissButton = {
@@ -253,7 +253,7 @@ class MainActivity : ComponentActivity() {
                                     onClick = { showModuleDialog = null },
                                     shape = ReShiftButtonShape
                                 ) {
-                                    Text("Later")
+                                    Text(getString(R.string.later))
                                 }
                             },
                             shape = ReShiftDialogShape

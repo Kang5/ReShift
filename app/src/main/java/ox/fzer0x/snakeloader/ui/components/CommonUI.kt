@@ -27,6 +27,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.theme.SuccessGreen
 
 // Unified Design System Shape Tokens
@@ -111,7 +113,7 @@ fun ReShiftTopAppBar(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back"
+                        contentDescription = stringResource(R.string.common_back)
                     )
                 }
             }

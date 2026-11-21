@@ -30,11 +30,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.drawable.toBitmap
 import kotlinx.coroutines.launch
 import ox.fzer0x.snakeloader.AppInfo
 import ox.fzer0x.snakeloader.FridaManager
 import ox.fzer0x.snakeloader.FridaScript
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ui.components.ReShiftCard
 import ox.fzer0x.snakeloader.ui.components.ReShiftTopAppBar
 import ox.fzer0x.snakeloader.ui.components.ReShiftButtonShape
@@ -139,7 +141,7 @@ fun AdvancedFridaScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             ReShiftTopAppBar(
-                title = "Advanced Config",
+                title = stringResource(R.string.adv_title),
                 onBack = onBack,
                 actions = {
                     IconButton(onClick = {
@@ -163,7 +165,7 @@ fun AdvancedFridaScreen(
             }
 
             item {
-                SectionHeader("1. TARGET SELECTION")
+                SectionHeader(stringResource(R.string.adv_step1))
                 TargetAppCard(
                     app = currentApp,
                     packageName = viewModel.currentPackage.value,
@@ -172,7 +174,7 @@ fun AdvancedFridaScreen(
             }
 
             item {
-                SectionHeader("2. ENVIRONMENT OPTIONS")
+                SectionHeader(stringResource(R.string.adv_step2))
                 ConfigurationSection(
                     viewModel = viewModel,
                     fridaManager = fridaManager
@@ -180,12 +182,12 @@ fun AdvancedFridaScreen(
             }
 
             item {
-                SectionHeader("3. BINARY MANAGEMENT")
+                SectionHeader(stringResource(R.string.adv_step3))
                 BinaryManagementSection(viewModel, fridaManager)
             }
 
             item {
-                SectionHeader("4. DEPLOYMENT")
+                SectionHeader(stringResource(R.string.adv_step4))
 
                 OutlinedButton(
                     onClick = {
@@ -207,7 +209,7 @@ fun AdvancedFridaScreen(
                     } else {
                         Icon(Icons.Default.Build, null)
                         Spacer(Modifier.width(8.dp))
-                        Text("Start Full Toolchain", fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.adv_start_all), fontWeight = FontWeight.Bold)
                     }
                 }
 
@@ -226,7 +228,7 @@ fun AdvancedFridaScreen(
                     } else {
                         Icon(Icons.Default.FlashOn, null)
                         Spacer(Modifier.width(8.dp))
-                        Text("Multi-Script Manager", fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.adv_multi_script), fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -292,17 +294,17 @@ private fun FridaStatusHeader(status: Map<String, Any>) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 StatusBadge(
-                    label = "RUNNING",
+                    label = stringResource(R.string.common_active),
                     value = runningBinary.uppercase(),
                     color = if (runningBinary != "none") SuccessGreen else MaterialTheme.colorScheme.outline
                 )
                 StatusBadge(
-                    label = "STRATEGY",
+                    label = stringResource(R.string.adv_strategy),
                     value = selectedMode.uppercase(),
                     color = MaterialTheme.colorScheme.primary
                 )
                 StatusBadge(
-                    label = "SRV",
+                    label = stringResource(R.string.adv_srv),
                     value = if (serverRunning) "ON" else "OFF",
                     color = if (serverRunning) SuccessGreen else MaterialTheme.colorScheme.error
                 )
@@ -392,7 +394,7 @@ private fun ConfigurationSection(viewModel: AdvancedFridaViewModel, fridaManager
                             fridaManager.selectedFridaBinary = "auto"
                         }
                         StrategyChip(
-                            label = "Server",
+                            label = stringResource(R.string.frida_mode_server),
                             selected = viewModel.selectedFridaBinary.value == "server",
                             available = available["server"] ?: true,
                             modifier = Modifier.weight(1f)
@@ -401,7 +403,7 @@ private fun ConfigurationSection(viewModel: AdvancedFridaViewModel, fridaManager
                             fridaManager.selectedFridaBinary = "server"
                         }
                         StrategyChip(
-                            label = "Inject",
+                            label = stringResource(R.string.frida_mode_inject),
                             selected = viewModel.selectedFridaBinary.value == "inject",
                             available = available["inject"] ?: true,
                             modifier = Modifier.weight(1f)
@@ -412,7 +414,7 @@ private fun ConfigurationSection(viewModel: AdvancedFridaViewModel, fridaManager
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         StrategyChip(
-                            label = "CLI",
+                            label = stringResource(R.string.adv_cli),
                             selected = viewModel.selectedFridaBinary.value == "cli",
                             available = available["cli"] ?: true,
                             modifier = Modifier.weight(1f)
@@ -421,7 +423,7 @@ private fun ConfigurationSection(viewModel: AdvancedFridaViewModel, fridaManager
                             fridaManager.selectedFridaBinary = "cli"
                         }
                         StrategyChip(
-                            label = "Gadget",
+                            label = stringResource(R.string.adv_gadget),
                             selected = viewModel.selectedFridaBinary.value == "gadget",
                             available = available["gadget"] ?: true,
                             modifier = Modifier.weight(1f)
@@ -480,14 +482,14 @@ private fun PackageSelectorDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Target Application", fontWeight = FontWeight.Bold) },
+        title = { Text(stringResource(R.string.common_target_app), fontWeight = FontWeight.Bold) },
         text = {
             Column {
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = onSearchChange,
                     modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
-                    placeholder = { Text("Filter...") },
+                    placeholder = { Text(stringResource(R.string.common_filter_hint)) },
                     leadingIcon = { Icon(Icons.Default.Search, null) },
                     singleLine = true,
                     shape = ReShiftButtonShape
@@ -514,7 +516,7 @@ private fun PackageSelectorDialog(
                 }
             }
         },
-        confirmButton = { TextButton(onClick = onDismiss, shape = ReShiftButtonShape) { Text("Cancel") } },
+        confirmButton = { TextButton(onClick = onDismiss, shape = ReShiftButtonShape) { Text(stringResource(R.string.common_cancel)) } },
         shape = ReShiftDialogShape
     )
 }
@@ -530,7 +532,7 @@ private fun ScriptSelectorDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Multi-Script Management", fontWeight = FontWeight.Bold) },
+        title = { Text(stringResource(R.string.adv_multi_mgmt), fontWeight = FontWeight.Bold) },
         text = {
             Column {
                 OutlinedButton(
@@ -540,9 +542,9 @@ private fun ScriptSelectorDialog(
                 ) {
                     Icon(Icons.Default.Add, null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text("Import .js File", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.adv_import_js), fontWeight = FontWeight.Bold)
                 }
-                Text("Select modules to include:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
+                Text(stringResource(R.string.adv_select_modules), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
                 LazyColumn(modifier = Modifier.heightIn(max = 300.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     items(availableScripts) { (scriptName, displayName) ->
                         val isSelected = selectedScripts.contains(scriptName)
@@ -571,7 +573,7 @@ private fun ScriptSelectorDialog(
         },
         confirmButton = {
             Button(onClick = { onExecute(selectedScripts) }, enabled = selectedScripts.isNotEmpty(), shape = ReShiftButtonShape) {
-                Text("Deploy & Inject", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.adv_deploy_inject), fontWeight = FontWeight.Bold)
             }
         },
         dismissButton = { TextButton(onClick = onDismiss, shape = ReShiftButtonShape) { Text("Cancel") } },
