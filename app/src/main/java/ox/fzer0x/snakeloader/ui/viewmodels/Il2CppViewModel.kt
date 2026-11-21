@@ -27,6 +27,7 @@ import ox.fzer0x.snakeloader.LogManager
 import ox.fzer0x.snakeloader.OverlayService
 import ox.fzer0x.snakeloader.ScriptManager
 import ox.fzer0x.snakeloader.spoofer.DeviceSpooferManager
+import ox.fzer0x.snakeloader.R
 import ox.fzer0x.snakeloader.ai.AiGoalPreset
 import ox.fzer0x.snakeloader.ai.AdaptiveLlmRouter
 import ox.fzer0x.snakeloader.ai.AgentExecutionMode
@@ -139,12 +140,16 @@ data class AgentLogStep(
 class Il2CppViewModel(
     private val fridaManager: FridaManager,
     private val scriptManager: ScriptManager,
-    private val spooferManager: DeviceSpooferManager? = null
+    private val spooferManager: DeviceSpooferManager? = null,
+    private val appContext: Context? = null
 ) : ViewModel() {
 
     companion object {
         private const val TAG = "Il2CppViewModel"
     }
+
+    private fun tr(@androidx.annotation.StringRes resId: Int, fallback: String): String =
+        appContext?.getString(resId) ?: fallback
 
     private val gson: Gson = GsonBuilder()
         .registerTypeAdapter(Boolean::class.java, JsonDeserializer<Boolean> { json, _, _ ->
@@ -835,7 +840,7 @@ class Il2CppViewModel(
     ) {
         val app = _selectedApp.value
         if (app == null) {
-            _errorMessage.value = "Please select a target application first!"
+            _errorMessage.value = tr(R.string.il2cpp_err_no_target_app, "Please select a target application first!")
             return
         }
 
@@ -970,7 +975,7 @@ class Il2CppViewModel(
     fun startInspection(context: Context) {
         val app = _selectedApp.value
         if (app == null) {
-            _errorMessage.value = "Please select a target application first!"
+            _errorMessage.value = tr(R.string.il2cpp_err_no_target_app, "Please select a target application first!")
             return
         }
 
@@ -1232,7 +1237,7 @@ class Il2CppViewModel(
     fun loadSavedDump(context: Context? = null) {
         val app = _selectedApp.value
         if (app == null) {
-            _errorMessage.value = "Please select a target application first!"
+            _errorMessage.value = tr(R.string.il2cpp_err_no_target_app, "Please select a target application first!")
             return
         }
 

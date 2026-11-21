@@ -148,7 +148,7 @@ fun StalkerToolboxScreen(
                         val currentPackage = currentPackageState.value
                         if (!currentPackage.isNullOrEmpty()) {
                             Text(
-                                "Target: $currentPackage",
+                                stringResource(R.string.il2cpp_target_prefix, currentPackage),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold,
@@ -184,7 +184,10 @@ fun StalkerToolboxScreen(
                         ) {
                             Icon(if (isRunning) Icons.Default.Stop else Icons.Default.PlayArrow, null)
                             Spacer(Modifier.width(8.dp))
-                            Text(if (isRunning) "Stop" else "Start", fontWeight = FontWeight.Bold)
+                            Text(
+                                text = if (isRunning) stringResource(R.string.st_stop) else stringResource(R.string.st_start),
+                                fontWeight = FontWeight.Bold
+                            )
                         }
                     }
                 }
@@ -193,9 +196,9 @@ fun StalkerToolboxScreen(
             item {
                 SectionHeader(stringResource(R.string.st_guide))
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    OutlinedInfoItem(Icons.Default.Speed, "Identifies active code paths by monitoring function call frequencies.")
-                    OutlinedInfoItem(Icons.Default.Security, "Bypasses basic anti-debugging by observing flow branch points.")
-                    OutlinedInfoItem(Icons.Default.Memory, "Resolves symbols using the native DebugSymbol API on-the-fly.")
+                    OutlinedInfoItem(Icons.Default.Speed, stringResource(R.string.st_guide_hotpath))
+                    OutlinedInfoItem(Icons.Default.Security, stringResource(R.string.st_guide_antidebug))
+                    OutlinedInfoItem(Icons.Default.Memory, stringResource(R.string.st_guide_symbols))
                 }
             }
 
@@ -206,7 +209,7 @@ fun StalkerToolboxScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        "Note: Performance varies by hardware. Targeted module filters recommended.",
+                        stringResource(R.string.st_guide_note),
                         modifier = Modifier.padding(12.dp),
                         fontSize = 11.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,

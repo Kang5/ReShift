@@ -294,7 +294,10 @@ fun FridaBinaryManagerCard(
                 Icon(Icons.Default.DownloadForOffline, null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = "Download / Update All Binaries (${latestGitHubRelease ?: "Latest"})",
+                    text = stringResource(
+                        R.string.frida_download_all,
+                        latestGitHubRelease ?: stringResource(R.string.frida_latest)
+                    ),
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp,
                     maxLines = 1,

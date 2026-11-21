@@ -15,6 +15,17 @@ import ox.fzer0x.snakeloader.ui.viewmodels.Il2CppMethodData
 import ox.fzer0x.snakeloader.ui.viewmodels.Il2CppPropertyData
 import java.lang.reflect.Type
 
+/**
+ * Gson deserializes via Unsafe, bypassing Kotlin field initializers and the
+ * non-null contract: a JSON payload that omits a field leaves it `null` even
+ * though the property is declared `String`. That makes `klass.name ?: ""`
+ * useless (the compiler proves the static type non-null and drops the check),
+ * so the null still reaches SQLite / string ops.
+ *
+ * Reading the value into a `String?` local restores the runtime check.
+ */
+private fun String?.orEmptyFromGson(): String = this ?: ""
+
 class Il2CppDatabaseHelper(context: Context) : SQLiteOpenHelper(
     context,
     DATABASE_NAME,
@@ -256,16 +267,16 @@ class Il2CppDatabaseHelper(context: Context) : SQLiteOpenHelper(
             for (klass in validClasses) {
                 statement.clearBindings()
 
-                val name = klass.name ?: ""
-                val namespace = klass.namespace ?: ""
-                val fn = klass.fullName ?: ""
+                val name = klass.name.orEmptyFromGson()
+                val namespace = klass.namespace.orEmptyFromGson()
+                val fn = klass.fullName.orEmptyFromGson()
                 val fullName = when {
                     fn.isNotBlank() -> fn
                     namespace.isNotBlank() -> "$namespace.$name"
                     else -> name
                 }
-                val assembly = klass.assembly ?: ""
-                val parent = klass.parent ?: ""
+                val assembly = klass.assembly.orEmptyFromGson()
+                val parent = klass.parent.orEmptyFromGson()
 
                 @Suppress("UNCHECKED_CAST")
                 val methodsList = (klass.methods as List<Il2CppMethodData>?) ?: emptyList()
@@ -620,7 +631,7 @@ class Il2CppDatabaseHelper(context: Context) : SQLiteOpenHelper(
             val klass = getClassByName(packageName, currentName) ?: break
             if (result.any { it.fullName.equals(klass.fullName, ignoreCase = true) }) break
             result.add(klass)
-            currentName = klass.parent ?: ""
+            currentName = klass.parent.orEmptyFromGson()
             depth++
         }
         return result

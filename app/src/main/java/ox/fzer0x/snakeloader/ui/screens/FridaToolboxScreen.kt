@@ -140,11 +140,11 @@ fun FridaToolboxScreen(
                                 Spacer(Modifier.width(10.dp))
                                 Column {
                                     val modeTitle = when (selectedBinary) {
-                                        "inject" -> if (isFridaRunning) "Frida Inject Active" else "Frida Inject Stopped"
-                                        "cli" -> if (isFridaRunning) "Frida RPC (CLI) Active" else "Frida RPC (CLI) Stopped"
-                                        "gadget" -> if (isFridaRunning) "Frida Gadget Active" else "Frida Gadget Stopped"
-                                        "auto" -> if (isFridaRunning) "Frida Engine Active" else "Frida Engine Stopped"
-                                        else -> if (isFridaRunning) "Frida Server Active" else "Frida Server Stopped"
+                                        "inject" -> if (isFridaRunning) stringResource(R.string.frida_status_inject_active) else stringResource(R.string.frida_status_inject_stopped)
+                                        "cli" -> if (isFridaRunning) stringResource(R.string.frida_status_rpc_active) else stringResource(R.string.frida_status_rpc_stopped)
+                                        "gadget" -> if (isFridaRunning) stringResource(R.string.frida_status_gadget_active) else stringResource(R.string.frida_status_gadget_stopped)
+                                        "auto" -> if (isFridaRunning) stringResource(R.string.frida_status_engine_active) else stringResource(R.string.frida_status_engine_stopped)
+                                        else -> if (isFridaRunning) stringResource(R.string.frida_status_server_active) else stringResource(R.string.frida_status_server_stopped)
                                     }
                                     Text(
                                         text = modeTitle,
@@ -155,14 +155,16 @@ fun FridaToolboxScreen(
                                         text = if (isFridaRunning) {
                                             val activeMode = if (selectedBinary != "auto") selectedBinary else runningBinary
                                             val modeName = when (activeMode) {
-                                                "inject" -> "Inject Mode"
-                                                "cli" -> "RPC (CLI) Mode"
-                                                "gadget" -> "Zygisk (Gadget) Mode"
-                                                "server" -> "Server Mode"
-                                                else -> "Auto Strategy"
+                                                "inject" -> stringResource(R.string.frida_mode_name_inject)
+                                                "cli" -> stringResource(R.string.frida_mode_name_rpc)
+                                                "gadget" -> stringResource(R.string.frida_mode_name_gadget)
+                                                "server" -> stringResource(R.string.frida_mode_name_server)
+                                                else -> stringResource(R.string.frida_mode_name_auto)
                                             }
-                                            if (fridaVersion.isNotEmpty()) "$modeName • v$fridaVersion" else modeName
-                                        } else "Engine offline",
+                                            if (fridaVersion.isNotEmpty()) {
+                                                stringResource(R.string.frida_mode_name_versioned, modeName, fridaVersion)
+                                            } else modeName
+                                        } else stringResource(R.string.frida_engine_offline),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -171,9 +173,16 @@ fun FridaToolboxScreen(
 
                             StatusBadge(
                                 text = if (isFridaRunning) {
-                                    val badgeText = if (selectedBinary != "auto") selectedBinary.uppercase() else runningBinary.uppercase()
-                                    if (badgeText != "NONE") badgeText else "ACTIVE"
-                                } else "STOPPED",
+                                    val activeBinary = if (selectedBinary != "auto") selectedBinary else runningBinary
+                                    when (activeBinary) {
+                                        "inject" -> stringResource(R.string.frida_mode_inject)
+                                        "cli" -> stringResource(R.string.frida_mode_rpc)
+                                        "gadget" -> stringResource(R.string.frida_mode_gadget)
+                                        "server" -> stringResource(R.string.frida_mode_server)
+                                        "auto" -> stringResource(R.string.frida_mode_auto)
+                                        else -> stringResource(R.string.frida_badge_active)
+                                    }
+                                } else stringResource(R.string.frida_badge_stopped),
                                 color = if (isFridaRunning) SuccessGreen else MaterialTheme.colorScheme.error
                             )
                         }
@@ -181,7 +190,7 @@ fun FridaToolboxScreen(
                         Spacer(Modifier.height(14.dp))
 
                         Text(
-                            text = "Execution Mode Strategy",
+                            text = stringResource(R.string.frida_execution_mode),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -292,10 +301,16 @@ fun FridaToolboxScreen(
                 SectionHeader(stringResource(R.string.frida_section_security))
                 ReShiftCard {
                     Column(modifier = Modifier.padding(vertical = 4.dp)) {
+                        val statePermissive = stringResource(R.string.frida_state_permissive)
+                        val stateEnforcing = stringResource(R.string.frida_state_enforcing)
+                        val snackSelinuxPermissive = stringResource(R.string.frida_snack_selinux_set, statePermissive)
+                        val snackSelinuxEnforcing = stringResource(R.string.frida_snack_selinux_set, stateEnforcing)
+                        val snackPtraceUpdated = stringResource(R.string.frida_snack_ptrace_updated)
+
                         SecuritySettingRow(
                             title = stringResource(R.string.frida_selinux_mode),
-                            subtitle = if (isSelinuxPermissive) "Permissive (Kernel security hooks bypassed)" else "Enforcing (Standard system security active)",
-                            value = if (isSelinuxPermissive) "Permissive" else "Enforcing",
+                            subtitle = if (isSelinuxPermissive) stringResource(R.string.frida_selinux_permissive) else stringResource(R.string.frida_selinux_enforcing),
+                            value = if (isSelinuxPermissive) statePermissive else stateEnforcing,
                             color = if (isSelinuxPermissive) WarningOrange else SuccessGreen,
                             icon = if (isSelinuxPermissive) Icons.Default.LockOpen else Icons.Default.Security,
                             onClick = {
@@ -303,7 +318,7 @@ fun FridaToolboxScreen(
                                     val target = !isSelinuxPermissive
                                     fridaManager.setSelinuxPermissive(target)
                                     refreshSettings()
-                                    snackbarHostState.showSnackbar("SELinux set to ${if (target) "Permissive" else "Enforcing"}")
+                                    snackbarHostState.showSnackbar(if (target) snackSelinuxPermissive else snackSelinuxEnforcing)
                                 }
                             }
                         )
@@ -312,8 +327,8 @@ fun FridaToolboxScreen(
 
                         SecuritySettingRow(
                             title = stringResource(R.string.frida_ptrace_scope),
-                            subtitle = if (isPtraceScopeDisabled) "Disabled (Process memory attachment permitted)" else "Restricted (YAMA ptrace restriction enabled)",
-                            value = if (isPtraceScopeDisabled) "Disabled" else "Restricted",
+                            subtitle = if (isPtraceScopeDisabled) stringResource(R.string.frida_ptrace_disabled) else stringResource(R.string.frida_ptrace_restricted),
+                            value = if (isPtraceScopeDisabled) stringResource(R.string.frida_state_disabled) else stringResource(R.string.frida_state_restricted),
                             color = if (isPtraceScopeDisabled) SuccessGreen else WarningOrange,
                             icon = Icons.Default.Visibility,
                             onClick = {
@@ -324,7 +339,7 @@ fun FridaToolboxScreen(
                                         fridaManager.disablePtraceScope()
                                     }
                                     refreshSettings()
-                                    snackbarHostState.showSnackbar("Ptrace scope updated")
+                                    snackbarHostState.showSnackbar(snackPtraceUpdated)
                                 }
                             }
                         )
@@ -333,8 +348,8 @@ fun FridaToolboxScreen(
 
                         SecuritySettingRow(
                             title = stringResource(R.string.frida_stealth_mode),
-                            subtitle = if (isStealthModeEnabled) "Active (Anti-detection & binary cloak active)" else "Default (Standard Frida binary signature)",
-                            value = if (isStealthModeEnabled) "Active" else "Default",
+                            subtitle = if (isStealthModeEnabled) stringResource(R.string.frida_stealth_active) else stringResource(R.string.frida_stealth_default),
+                            value = if (isStealthModeEnabled) stringResource(R.string.frida_state_active) else stringResource(R.string.frida_state_default),
                             color = if (isStealthModeEnabled) SuccessGreen else MaterialTheme.colorScheme.outline,
                             icon = if (isStealthModeEnabled) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                             onClick = null
@@ -417,10 +432,11 @@ fun FridaToolboxScreen(
             // SECTION 4: POWER UTILITIES & SYSTEM ACTIONS
             item {
                 SectionHeader(stringResource(R.string.frida_section_power))
+                val logcatClearedMsg = stringResource(R.string.frida_logcat_cleared)
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     ToolboxActionRow(
                         title = stringResource(R.string.frida_process_manager),
-                        description = "Inspect running apps & loaded .so libraries",
+                        description = stringResource(R.string.frida_desc_process),
                         icon = Icons.AutoMirrored.Filled.List,
                         onClick = {
                             processViewModel.refreshProcesses()
@@ -429,17 +445,18 @@ fun FridaToolboxScreen(
                     )
                     ToolboxActionRow(
                         title = stringResource(R.string.frida_root_shell),
-                        description = "Execute su terminal commands with live output",
+                        description = stringResource(R.string.frida_desc_shell),
                         icon = Icons.Outlined.Terminal,
                         onClick = { showShellDialog = true }
                     )
                     ToolboxActionRow(
                         title = stringResource(R.string.frida_flush_logcat),
-                        description = "Clear Android logcat buffers",
+                        description = stringResource(R.string.frida_desc_logcat),
                         icon = Icons.Default.DeleteSweep,
                         onClick = {
                             fridaManager.executeRootCommand("logcat -c")
-                            scope.launch { snackbarHostState.showSnackbar("Logcat cleared") }
+                            val clearedMsg = logcatClearedMsg
+                            scope.launch { snackbarHostState.showSnackbar(clearedMsg) }
                         }
                     )
                     PowerControlCard(fridaManager = fridaManager)
@@ -888,14 +905,14 @@ fun PowerControlCard(fridaManager: FridaManager) {
                 Spacer(Modifier.width(14.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        "Device Power Control",
+                        text = stringResource(R.string.frida_power_control),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp
                     )
                     Spacer(Modifier.height(2.dp))
                     Text(
-                        "Reboot System, Bootloader or Recovery",
+                        text = stringResource(R.string.frida_power_control_desc),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 12.sp
@@ -967,25 +984,29 @@ fun FridaToolboxPreview() {
                                     Spacer(Modifier.width(10.dp))
                                     Column {
                                         Text(
-                                            text = "Frida Server Active",
+                                            text = stringResource(R.string.frida_status_server_active),
                                             style = MaterialTheme.typography.titleMedium,
                                             fontWeight = FontWeight.Bold
                                         )
                                         Text(
-                                            text = "Inject Mode • v16.1.4",
+                                            text = stringResource(
+                                                R.string.frida_mode_name_versioned,
+                                                stringResource(R.string.frida_mode_name_inject),
+                                                "16.1.4"
+                                            ),
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
                                 }
 
-                                StatusBadge(text = "INJECT", color = SuccessGreen)
+                                StatusBadge(text = stringResource(R.string.frida_mode_inject).uppercase(), color = SuccessGreen)
                             }
 
                             Spacer(Modifier.height(14.dp))
 
                             Text(
-                                text = "Execution Mode Strategy",
+                                text = stringResource(R.string.frida_execution_mode),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant

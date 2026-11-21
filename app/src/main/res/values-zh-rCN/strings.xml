@@ -286,6 +286,53 @@
     <string name="frida_ptrace_disabled">已禁用（允许附加进程内存）</string>
     <string name="frida_stealth_default">默认（标准 Frida 二进制特征）</string>
 
+    <!-- i18n: Frida 引擎状态、模式名称与安全状态 -->
+    <string name="frida_status_inject_active">Frida 注入已启动</string>
+    <string name="frida_status_inject_stopped">Frida 注入已停止</string>
+    <string name="frida_status_rpc_active">Frida RPC（CLI）已启动</string>
+    <string name="frida_status_rpc_stopped">Frida RPC（CLI）已停止</string>
+    <string name="frida_status_gadget_active">Frida Gadget 已启动</string>
+    <string name="frida_status_gadget_stopped">Frida Gadget 已停止</string>
+    <string name="frida_status_engine_active">Frida 引擎已启动</string>
+    <string name="frida_status_engine_stopped">Frida 引擎已停止</string>
+    <string name="frida_status_server_active">Frida 服务端已启动</string>
+    <string name="frida_status_server_stopped">Frida 服务端已停止</string>
+    <string name="frida_mode_name_inject">注入模式</string>
+    <string name="frida_mode_name_rpc">RPC（CLI）模式</string>
+    <string name="frida_mode_name_gadget">Zygisk（Gadget）模式</string>
+    <string name="frida_mode_name_server">服务端模式</string>
+    <string name="frida_mode_name_auto">自动策略</string>
+    <string name="frida_mode_name_versioned">%1$s • v%2$s</string>
+    <string name="frida_engine_offline">引擎离线</string>
+    <string name="frida_execution_mode">执行模式策略</string>
+    <string name="frida_selinux_enforcing">强制模式（标准系统安全已启用）</string>
+    <string name="frida_ptrace_restricted">受限（YAMA ptrace 限制已启用）</string>
+    <string name="frida_stealth_active">已启用（反检测与二进制伪装生效）</string>
+    <string name="frida_state_enforcing">强制</string>
+    <string name="frida_state_permissive">宽容</string>
+    <string name="frida_state_restricted">受限</string>
+    <string name="frida_state_disabled">已禁用</string>
+    <string name="frida_state_active">已启用</string>
+    <string name="frida_state_default">默认</string>
+    <string name="frida_badge_active">运行中</string>
+    <string name="frida_badge_stopped">已停止</string>
+    <string name="frida_snack_selinux_set">SELinux 已设为 %1$s</string>
+    <string name="frida_snack_ptrace_updated">Ptrace 作用范围已更新</string>
+    <string name="frida_power_control">设备电源控制</string>
+    <string name="frida_power_control_desc">重启系统、Bootloader 或 Recovery</string>
+    <string name="frida_desc_process">查看运行中的应用与已加载的 .so 库</string>
+    <string name="frida_desc_shell">执行 su 终端命令并实时显示输出</string>
+    <string name="frida_desc_logcat">清空 Android logcat 缓冲区</string>
+    <string name="frida_logcat_cleared">Logcat 已清空</string>
+    <string name="frida_download_all">下载 / 更新全部二进制文件（%1$s）</string>
+    <string name="frida_latest">最新</string>
+    <string name="af_strategy_sequential">顺序执行</string>
+    <string name="il2cpp_seconds">%1$d 秒</string>
+    <string name="il2cpp_no_classes">没有类匹配你的筛选或搜索条件。</string>
+    <string name="il2cpp_extracting">正在从目标进程内存中提取元数据…</string>
+    <string name="il2cpp_target_prefix">目标：%1$s</string>
+    <string name="il2cpp_err_no_target_app">请先选择一个目标应用！</string>
+
     <!-- i18n: IL2CPP 界面 -->
     <string name="il2cpp_global_ai">全局 AI 助手</string>
     <string name="il2cpp_load_cache">加载缓存</string>
@@ -375,6 +422,7 @@
     <string name="common_save">保存</string>
     <string name="common_share">分享</string>
     <string name="il2cpp_select_target_app2">选择目标应用</string>
+    <string name="il2cpp_select_target_hint">点击「选择」挑选已安装应用以提取元数据</string>
     <string name="il2cpp_search_app">搜索应用名称或包名…</string>
     <string name="common_cancel">取消</string>
 
@@ -524,6 +572,12 @@
     <string name="st_guide">操作指南</string>
     <string name="st_hot_path">热路径分析</string>
     <string name="st_call_hier">调用层级片段</string>
+    <string name="st_guide_hotpath">通过监控函数调用频率来识别活跃的代码路径。</string>
+    <string name="st_guide_antidebug">通过观察流程分支点绕过基础反调试。</string>
+    <string name="st_guide_symbols">使用原生 DebugSymbol API 即时解析符号。</string>
+    <string name="st_guide_note">注意：性能因硬件而异，建议使用目标模块筛选。</string>
+    <string name="st_start">开始</string>
+    <string name="st_stop">停止</string>
     <string name="boot_skip">跳过</string>
     <string name="boot_skip_upper">跳过</string>
     <string name="boot_sequence">系统启动序列</string>

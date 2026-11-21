@@ -272,14 +272,14 @@ fun Il2CppScreen(
 
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = selectedApp?.label ?: "Select Target Application",
+                                    text = selectedApp?.label ?: stringResource(R.string.il2cpp_select_target_app2),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 15.sp,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
                                 Text(
-                                    text = selectedApp?.packageName ?: "Tap 'Select' to pick an installed app for metadata extraction",
+                                    text = selectedApp?.packageName ?: stringResource(R.string.il2cpp_select_target_hint),
                                     fontSize = 11.sp,
                                     color = MaterialTheme.colorScheme.outline,
                                     maxLines = 1,
@@ -411,7 +411,7 @@ fun Il2CppScreen(
                                     shape = RoundedCornerShape(8.dp)
                                 ) {
                                     Text(
-                                        text = "${injectionDelaySeconds} Seconds",
+                                        text = stringResource(R.string.il2cpp_seconds, injectionDelaySeconds),
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 11.sp,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -678,7 +678,7 @@ fun Il2CppScreen(
                                 )
                                 Spacer(modifier = Modifier.height(12.dp))
                                 Text(
-                                    text = if (isDumping) "Extracting metadata from target process memory..." else "No classes matched your filter or search query.",
+                                    text = if (isDumping) stringResource(R.string.il2cpp_extracting) else stringResource(R.string.il2cpp_no_classes),
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Medium,
                                     color = MaterialTheme.colorScheme.outline,

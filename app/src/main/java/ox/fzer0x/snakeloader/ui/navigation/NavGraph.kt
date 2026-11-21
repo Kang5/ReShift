@@ -3,6 +3,7 @@ package ox.fzer0x.snakeloader.ui.navigation
 import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -84,6 +85,8 @@ fun ReShiftNavGraph(
     ),
     modifier: Modifier = Modifier
 ) {
+    val appContext = LocalContext.current
+
     val appsViewModel: AppsViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -143,7 +146,7 @@ fun ReShiftNavGraph(
         factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return Il2CppViewModel(fridaManager, scriptManager, deviceSpooferManager) as T
+                return Il2CppViewModel(fridaManager, scriptManager, deviceSpooferManager, appContext) as T
             }
         }
     )

@@ -286,6 +286,53 @@
     <string name="frida_ptrace_disabled">Disabled (Process memory attachment permitted)</string>
     <string name="frida_stealth_default">Default (Standard Frida binary signature)</string>
 
+    <!-- i18n: Frida engine status, mode names & security states -->
+    <string name="frida_status_inject_active">Frida Inject Active</string>
+    <string name="frida_status_inject_stopped">Frida Inject Stopped</string>
+    <string name="frida_status_rpc_active">Frida RPC (CLI) Active</string>
+    <string name="frida_status_rpc_stopped">Frida RPC (CLI) Stopped</string>
+    <string name="frida_status_gadget_active">Frida Gadget Active</string>
+    <string name="frida_status_gadget_stopped">Frida Gadget Stopped</string>
+    <string name="frida_status_engine_active">Frida Engine Active</string>
+    <string name="frida_status_engine_stopped">Frida Engine Stopped</string>
+    <string name="frida_status_server_active">Frida Server Active</string>
+    <string name="frida_status_server_stopped">Frida Server Stopped</string>
+    <string name="frida_mode_name_inject">Inject Mode</string>
+    <string name="frida_mode_name_rpc">RPC (CLI) Mode</string>
+    <string name="frida_mode_name_gadget">Zygisk (Gadget) Mode</string>
+    <string name="frida_mode_name_server">Server Mode</string>
+    <string name="frida_mode_name_auto">Auto Strategy</string>
+    <string name="frida_mode_name_versioned">%1$s • v%2$s</string>
+    <string name="frida_engine_offline">Engine offline</string>
+    <string name="frida_execution_mode">Execution Mode Strategy</string>
+    <string name="frida_selinux_enforcing">Enforcing (Standard system security active)</string>
+    <string name="frida_ptrace_restricted">Restricted (YAMA ptrace restriction enabled)</string>
+    <string name="frida_stealth_active">Active (Anti-detection &amp; binary cloak active)</string>
+    <string name="frida_state_enforcing">Enforcing</string>
+    <string name="frida_state_permissive">Permissive</string>
+    <string name="frida_state_restricted">Restricted</string>
+    <string name="frida_state_disabled">Disabled</string>
+    <string name="frida_state_active">Active</string>
+    <string name="frida_state_default">Default</string>
+    <string name="frida_badge_active">ACTIVE</string>
+    <string name="frida_badge_stopped">STOPPED</string>
+    <string name="frida_snack_selinux_set">SELinux set to %1$s</string>
+    <string name="frida_snack_ptrace_updated">Ptrace scope updated</string>
+    <string name="frida_power_control">Device Power Control</string>
+    <string name="frida_power_control_desc">Reboot System, Bootloader or Recovery</string>
+    <string name="frida_desc_process">Inspect running apps &amp; loaded .so libraries</string>
+    <string name="frida_desc_shell">Execute su terminal commands with live output</string>
+    <string name="frida_desc_logcat">Clear Android logcat buffers</string>
+    <string name="frida_logcat_cleared">Logcat cleared</string>
+    <string name="frida_download_all">Download / Update All Binaries (%1$s)</string>
+    <string name="frida_latest">Latest</string>
+    <string name="af_strategy_sequential">Sequential</string>
+    <string name="il2cpp_seconds">%1$d Seconds</string>
+    <string name="il2cpp_no_classes">No classes matched your filter or search query.</string>
+    <string name="il2cpp_extracting">Extracting metadata from target process memory...</string>
+    <string name="il2cpp_target_prefix">Target: %1$s</string>
+    <string name="il2cpp_err_no_target_app">Please select a target application first!</string>
+
     <!-- i18n: IL2CPP screen -->
     <string name="il2cpp_global_ai">Global AI Agent</string>
     <string name="il2cpp_load_cache">Load Cache</string>
@@ -375,6 +422,7 @@
     <string name="common_save">Save</string>
     <string name="common_share">Share</string>
     <string name="il2cpp_select_target_app2">Select Target Application</string>
+    <string name="il2cpp_select_target_hint">Tap \'Select\' to pick an installed app for metadata extraction</string>
     <string name="il2cpp_search_app">Search app name or package...</string>
     <string name="common_cancel">Cancel</string>
 
@@ -524,6 +572,12 @@
     <string name="st_guide">OPERATIONAL GUIDE</string>
     <string name="st_hot_path">HOT PATH ANALYSIS</string>
     <string name="st_call_hier">CALL HIERARCHY SEGMENTS</string>
+    <string name="st_guide_hotpath">Identifies active code paths by monitoring function call frequencies.</string>
+    <string name="st_guide_antidebug">Bypasses basic anti-debugging by observing flow branch points.</string>
+    <string name="st_guide_symbols">Resolves symbols using the native DebugSymbol API on-the-fly.</string>
+    <string name="st_guide_note">Note: Performance varies by hardware. Targeted module filters recommended.</string>
+    <string name="st_start">Start</string>
+    <string name="st_stop">Stop</string>
     <string name="boot_skip">Skip</string>
     <string name="boot_skip_upper">SKIP</string>
     <string name="boot_sequence">SYSTEM BOOT SEQUENCE</string>

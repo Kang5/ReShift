@@ -381,7 +381,7 @@ private fun ConfigurationSection(viewModel: AdvancedFridaViewModel, fridaManager
             ConfigGroup("STRATEGY") {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     StrategyChip("Combined", viewModel.selectedMode.value == "combined", modifier = Modifier.weight(1f)) { viewModel.setSelectedMode("combined") }
-                    StrategyChip("Sequential", viewModel.selectedMode.value == "sequential", modifier = Modifier.weight(1f)) { viewModel.setSelectedMode("sequential") }
+                    StrategyChip(stringResource(R.string.af_strategy_sequential), viewModel.selectedMode.value == "sequential", modifier = Modifier.weight(1f)) { viewModel.setSelectedMode("sequential") }
                 }
             }
 
